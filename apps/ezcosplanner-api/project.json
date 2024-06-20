@@ -1,0 +1,63 @@
+{
+  "name": "ezcosplanner-api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/ezcosplanner-api/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/ezcosplanner-api",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "apps/ezcosplanner-api/src/main.ts",
+        "tsConfig": "apps/ezcosplanner-api/tsconfig.app.json",
+        "assets": ["apps/ezcosplanner-api/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "ezcosplanner-api:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "ezcosplanner-api:build:development"
+        },
+        "production": {
+          "buildTarget": "ezcosplanner-api:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/ezcosplanner-api/jest.config.ts"
+      }
+    }
+  }
+}
