@@ -1,0 +1,127 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int        @id @default(autoincrement())
+  createdAt  DateTime   @default(now())
+  email      String     @unique
+  firstname  String?    @db.VarChar(255)
+  lastname   String?    @db.VarChar(255)
+  avatar     String?    @db.VarChar(255)
+  cosplans   Cosplan[]
+}
+
+model Cosplan {
+  id         Int               @id @default(autoincrement())
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  title      String            @db.VarChar(255)
+  fandom     String            @db.VarChar(255)
+  category   CosplanCategory
+  status     CosplanStatus
+  complexity Int?
+  deadline   DateTime?
+  image      String?           @db.VarChar(255)
+  parts      Part[]
+  references Reference[]
+  cosmaker   User              @relation(fields: [cosmakerId], references: [id])
+  cosmakerId Int
+}
+
+model Part {
+  id           Int           @id @default(autoincrement())
+  updatedAt    DateTime      @updatedAt
+  name         String        @db.VarChar(255)
+  workingTimes WorkingTime[]
+  wipPictures  WipPicture[]
+  tasks        Task[]
+  materials    Material[]
+  cosplan      Cosplan       @relation(fields: [cosplanId], references: [id])
+  cosplanId    Int
+}
+
+model Reference {
+  id        Int     @id @default(autoincrement())
+  url       String? @db.VarChar(255)
+  image     String? @db.VarChar(255)
+  cosplan   Cosplan @relation(fields: [cosplanId], references: [id])
+  cosplanId Int
+}
+
+model WorkingTime {
+  id     Int      @id @default(autoincrement())
+  day    DateTime
+  time   BigInt
+  part   Part?    @relation(fields: [partId], references: [id])
+  partId Int?
+  task   Task?    @relation(fields: [taskId], references: [id])
+  taskId Int?
+}
+
+model WipPicture {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime
+  image     String   @db.VarChar(255)
+  title     String?  @db.VarChar(255)
+  smallDesc String?  @db.VarChar(255)
+  part      Part     @relation(fields: [partId], references: [id])
+  partId    Int
+}
+
+model Material {
+  id       Int                @id @default(autoincrement())
+  name     String             @db.VarChar(255)
+  bought   Boolean            @default(false)
+  price    Float
+  category MaterialCategory
+  url      String?            @db.VarChar(255)
+  part     Part               @relation(fields: [partId], references: [id])
+  partId   Int
+}
+
+model Task {
+  id           Int           @id @default(autoincrement())
+  updatedAt    DateTime      @updatedAt
+  title        String?       @db.VarChar(255)
+  completed    Boolean       @default(false)
+  description  String?       @db.VarChar(255)
+  workingTimes WorkingTime[]
+  part         Part          @relation(fields: [partId], references: [id])
+  partId       Int
+}
+
+enum CosplanCategory {
+  VIDEO_GAME
+  ANIME
+  OC
+  SERIE
+  MOVIE
+  OTHER
+}
+
+enum CosplanStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETE
+}
+
+enum MaterialCategory {
+  FOAM
+  PAINT
+  FABRIC
+  TOOL
+  HABERDASHERY
+  STATIONERY
+}
