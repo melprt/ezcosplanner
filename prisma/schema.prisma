@@ -27,7 +27,7 @@ model Cosplan {
   id         Int               @id @default(autoincrement())
   createdAt  DateTime          @default(now())
   updatedAt  DateTime          @updatedAt
-  title      String            @db.VarChar(255)
+  name       String            @db.VarChar(255)
   fandom     String            @db.VarChar(255)
   category   CosplanCategory
   status     CosplanStatus

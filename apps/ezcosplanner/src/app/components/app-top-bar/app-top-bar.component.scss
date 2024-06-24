@@ -1,0 +1,7 @@
+@use "@angular/material" as mat;
+@use '../../styles/m3-theme';
+
+
+.button-primary {
+    @include mat.button-color(m3-theme.$light-theme, $color-variant: primary);
+}
