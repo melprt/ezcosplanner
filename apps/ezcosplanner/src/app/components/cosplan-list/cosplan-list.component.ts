@@ -4,11 +4,12 @@ import { AppTopBarComponent } from '../app-top-bar/app-top-bar.component';
 import { CosplanCardComponent } from '../cosplan-card/cosplan-card.component';
 import { CosplanService } from '../../services/cosplan.service';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { CosplanAddCardComponent } from '../cosplan-add-card/cosplan-add-card.component';
 
 @Component({
   selector: 'ezc-cosplan-list',
   standalone: true,
-  imports: [CommonModule, AppTopBarComponent, CosplanCardComponent],
+  imports: [CommonModule, CosplanCardComponent, CosplanAddCardComponent],
   templateUrl: './cosplan-list.component.html',
   styleUrl: './cosplan-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

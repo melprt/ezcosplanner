@@ -2,18 +2,22 @@
   "name": "ezcosplanner",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "prefix": "app",
+  "prefix": "ezc",
   "sourceRoot": "apps/ezcosplanner/src",
   "tags": [],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:application",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/ezcosplanner",
         "index": "apps/ezcosplanner/src/index.html",
         "browser": "apps/ezcosplanner/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "tsConfig": "apps/ezcosplanner/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -22,7 +26,9 @@
             "input": "apps/ezcosplanner/public"
           }
         ],
-        "styles": ["apps/ezcosplanner/src/styles.scss"],
+        "styles": [
+          "apps/ezcosplanner/src/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -72,7 +78,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "apps/ezcosplanner/jest.config.ts"
       }

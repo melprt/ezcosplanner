@@ -1,1 +1,21 @@
-<p>cosplan-card works!</p>
+<mat-card appearance="outlined" class="cosplan-card flex flex-col justify-between">
+  <mat-card-header>
+    <div mat-card-avatar class="cosplan-image"></div>
+    <mat-card-title>{{ cosplan.name }}</mat-card-title>
+    <mat-card-subtitle>{{cosplan.status}} cosplan.progression</mat-card-subtitle>
+  </mat-card-header>
+
+  <div class="min-h-0 min-w-0 flex flex-1 relative">
+    <img mat-card-image [ngSrc]="'/assets/unicornCat.png'" alt="Cosplan image" fill/>
+  </div>
+
+  <mat-card-content>
+  </mat-card-content>
+
+  <mat-card-actions [align]="'end'">
+    <button mat-icon-button class="card-action-button">
+      <mat-icon class="card-action-button__icon card-action-button__icon--edit" aria-hidden="false" aria-label="Edition"
+        fontIcon="edit"></mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
