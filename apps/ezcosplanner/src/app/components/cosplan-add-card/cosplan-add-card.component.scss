@@ -1,4 +1,4 @@
 @use '../../styles/card.theme.scss' as card-theme;
 
 @include card-theme.card-content();
-@include card-theme.card-action(48px, 96px);
+@include card-theme.card-action(300px, 600px);
