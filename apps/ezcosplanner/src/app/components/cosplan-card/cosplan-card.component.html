@@ -4,12 +4,8 @@
     <mat-card-title>{{ cosplan.name }}</mat-card-title>
     <mat-card-subtitle>{{cosplan.status}} cosplan.progression</mat-card-subtitle>
   </mat-card-header>
-
-  <div class="min-h-0 min-w-0 flex flex-1 relative">
+  <mat-card-content class="min-h-0 min-w-0 flex flex-1 relative">
     <img mat-card-image [ngSrc]="'/assets/unicornCat.png'" alt="Cosplan image" fill/>
-  </div>
-
-  <mat-card-content>
   </mat-card-content>
 
   <mat-card-actions [align]="'end'">
