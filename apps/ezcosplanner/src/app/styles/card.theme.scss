@@ -4,16 +4,3 @@
         height: 600px;
     }
 }
-
-@mixin card-action($font-size, $layer-font-size) {
-    .card-action-button {
-        --mdc-icon-button-state-layer-size: $layer-font-size;
-        --mdc-icon-button-icon-size: $font-size;
-
-        &__icon {
-            font-size: $font-size;
-            width: $font-size;
-            height: $font-size;
-        }
-    }
-}

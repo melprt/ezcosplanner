@@ -11,6 +11,12 @@ module.exports = {
     extend: {
       colors: {
         'primary': 'var(--primary)',
+        'primary-light': 'var(--primary-light)',
+        'primary-dark': 'var(--primary-dark)',
+        'secondary': 'var(--secondary)',
+        'tertiary': 'var(--tertiary)',
+        'neutral': 'var(--neutral)',
+        'error': 'var(--error)',
       }
     },
   },
