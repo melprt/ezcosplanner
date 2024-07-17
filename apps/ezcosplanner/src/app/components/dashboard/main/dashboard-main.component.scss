@@ -1,0 +1,23 @@
+.cosplan-indicators {
+  height: 142px;
+  &__circle-text {
+    width: 33.333%;
+    color: theme('colors.primary');
+
+    &--indicator {
+    color: #74565e;
+      height: 100%;
+      width: 115px;
+      border-radius: 100%;
+      border: theme('colors.primary') 10px solid;
+      -webkit-box-shadow: 4px 2px 13px -3px rgba(71, 42, 10, 0.5);
+      box-shadow: 4px 2px 13px -3px rgba(71, 42, 10, 0.5);
+    }
+
+    &--indicator-minutes {
+      bottom: -9px;
+      right: 5px;
+    }
+  }
+
+}

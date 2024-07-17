@@ -1,0 +1,24 @@
+<mat-toolbar class="flex flex row flex-wrap justify-between sticky top-0 z-50 dashboard-top-bar">
+  <div class="breadcrumb">
+    <!-- Todo -->
+  </div>
+
+
+  @switch(viewMode()) {
+    @case ('CREATE') {
+    <ng-container *ngTemplateOutlet="statusIcon; context: {status: 'PENDING'}" />
+    }
+    @case ('EDIT'){
+    <ng-container *ngTemplateOutlet="statusIcon; context: {status: cosplanStatus()}" />
+    }
+    @case ('LOADING') {
+    <!-- todo add skeleton loader (ngx-skeleton-loader) -->
+    }
+  }
+
+</mat-toolbar>
+
+
+<ng-template #statusIcon let-status="status">
+  <span class="cosplan-status-icon cosplan-status-icon__status-{{status}}"></span>
+</ng-template>

@@ -1,0 +1,26 @@
+.time-entrie-stat-card {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #d6c2c5;
+    border: #aa88901e 2px solid;
+    border-radius: 0.375rem;
+
+    &__header {
+        padding: 0;
+        display: flex;
+
+        &--subtitle {
+            color: theme('colors.primary-dark');
+        }
+    }
+
+    &__icon {
+        font-size: 60px;
+        width: 60px;
+        height: 60px;
+    }
+   
+}

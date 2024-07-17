@@ -1,0 +1,11 @@
+<mat-card class="w-52 cosplan-stat-card px-5 py-3 h-full border-opacity-5" appearance="outlined">
+    <mat-card-header class="p-0 mb-6 w-full text-center cosplan-stat-card__header">
+        <mat-card-title class="cosplan-stat-card__header--title">{{stat}}</mat-card-title>
+        <mat-card-subtitle class="cosplan-stat-card__header--subtitle">{{label}}</mat-card-subtitle>
+    </mat-card-header>
+    @if (img) {
+        <mat-card-content class="m-auto">
+            <img [ngSrc]="img" alt="statistic icon" width="55" height="55"/>
+        </mat-card-content>
+    }
+</mat-card>

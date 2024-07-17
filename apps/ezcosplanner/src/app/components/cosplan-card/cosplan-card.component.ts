@@ -5,22 +5,23 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { NgOptimizedImage } from '@angular/common';
 import { Cosplan } from '../../models/cosplan';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'ezc-cosplan-card',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, NgOptimizedImage, MatIconModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    NgOptimizedImage,
+    MatIconModule,
+    RouterLink,
+  ],
   templateUrl: './cosplan-card.component.html',
   styleUrl: './cosplan-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CosplanCardComponent {
-  @Input({required: true}) cosplan! : Cosplan;
-
-  ngOnInit(): void {
-    console.log(this.cosplan);
-  
-  }
-
-
+  @Input({ required: true }) cosplan!: Cosplan;
 }

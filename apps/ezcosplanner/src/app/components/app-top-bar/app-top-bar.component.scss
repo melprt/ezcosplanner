@@ -1,7 +1,41 @@
-@use "@angular/material" as mat;
-@use '../../styles/m3-theme';
+@use '../../styles/button-icon.scss' as button-icon;
 
+@include button-icon.button-icon(40px, 53px);
 
-.button-primary {
-    @include mat.button-color(m3-theme.$light-theme, $color-variant: primary);
+.app-toolbar {
+  padding-top: 65px;
+  padding-bottom: 65px;
+  background-color: #ffecef;
+
+  &__title {
+    &--name {
+      font-family: 'Indie Flower', cursive;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 50px;
+      -webkit-transition: all 0.4s ease 0s;
+      -o-transition: all 0.4s ease 0s;
+      transition: all 0.4s ease 0s;
+    }
+
+    &--subtitle {
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      line-height: 3em;  
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    &--heart {
+      top: -6px;
+      font-size: 36px;
+      -moz-transform: rotate(-12deg);
+      -webkit-transform: rotate(-12deg);
+      -o-transform: rotate(-12deg);
+      -ms-transform: rotate(-12deg);
+      transform: rotate(-12deg);
+      color: theme('colors.primary');
+    }
+  }
 }
