@@ -1,0 +1,1 @@
+export type CosplanStatus = 'PENDING' | 'IN_PROGRESS' | 'COMPLETE';
