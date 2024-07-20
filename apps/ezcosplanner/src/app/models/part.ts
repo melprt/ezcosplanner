@@ -1,7 +1,7 @@
 import { Material } from "./material";
 import { Task } from "./task";
 import { WipPicture } from "./wip-picture";
-import { WorkingTime } from "./working-time";
+import { TimeEntry } from "./time-entry";
 
 export interface Part {
     id: number;
@@ -9,6 +9,6 @@ export interface Part {
     name: string; 
     wipPictures: WipPicture[]|[];
     tasks: Task[]|[];
-    workingTimes: WorkingTime[]|[];
+    timeEntries: TimeEntry[]|[];
     materials: Material[]|[];
 }
