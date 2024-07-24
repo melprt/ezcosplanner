@@ -161,7 +161,7 @@ export class DashboardMainComponent {
     this.dialogService.openAnimatedDialog(
       'Suppression cosplan',
       'Es-tu sûr de vouloir suprimer ton cosplan ?',
-      () => this.deleteCosplan()
+      (res) => res && this.deleteCosplan()
     );
   }
 

@@ -2,7 +2,7 @@
 <mat-dialog-content>
   {{data.message}}
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button mat-dialog-close>Annuler</button>
-  <button mat-button mat-dialog-close cdkFocusInitial>Valider</button>
+<mat-dialog-actions class="flex gap-4">
+  <button (click)="close(false)">Annuler</button>
+  <button (click)="close(true)"mat-button cdkFocusInitial>Valider</button>
 </mat-dialog-actions>

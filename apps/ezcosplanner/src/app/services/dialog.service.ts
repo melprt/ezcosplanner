@@ -3,6 +3,11 @@ import { SimpleAlertDialogComponent } from '../components/Dialog/SimpleAlertDial
 import { inject, Injectable } from '@angular/core';
 import { first } from 'rxjs';
 
+interface DialogData {
+  title: string;
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -12,9 +17,13 @@ export class DialogService {
   openAnimatedDialog(
     title: string,
     message: string,
-    callback: () => void,
+    callback: (res?: boolean) => void
   ): void {
-    const dialogRef = this.dialog.open(SimpleAlertDialogComponent, {
+    const dialogRef = this.dialog.open<
+      SimpleAlertDialogComponent,
+      DialogData,
+      boolean
+    >(SimpleAlertDialogComponent, {
       data: {
         title,
         message,
@@ -24,6 +33,9 @@ export class DialogService {
       exitAnimationDuration: 100,
     });
 
-    dialogRef.afterClosed().pipe(first()).subscribe(() => callback());
+    dialogRef
+      .afterClosed()
+      .pipe(first())
+      .subscribe((res) => callback(res));
   }
 }

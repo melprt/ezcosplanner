@@ -4,6 +4,7 @@ import {
   MatDialogActions,
   MatDialogClose,
   MatDialogContent,
+  MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,4 +19,11 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class SimpleAlertDialogComponent {
   data = inject(MAT_DIALOG_DATA);   
+  private dialogRef: MatDialogRef<SimpleAlertDialogComponent, boolean> = inject(MatDialogRef);
+
+
+  close(status: boolean) {
+    this.dialogRef.close(status);
+  }
+
 }
