@@ -1,23 +1,37 @@
+
+@use '../../../styles/button-icon.scss' as button-icon;
+
+@include button-icon.button-icon(40px, 53px);
+
+.cosplan-actions {
+  &__button {
+    background-color: #ffecef;
+    color: theme("colors.primary-dark");
+    border-radius: 100%;
+  }
+}
+
 .cosplan-indicators {
   height: 142px;
-  &__circle-text {
-    width: 33.333%;
-    color: theme('colors.primary');
+}
 
-    &--indicator {
-    color: #74565e;
-      height: 100%;
-      width: 115px;
-      border-radius: 100%;
-      border: theme('colors.primary') 10px solid;
-      -webkit-box-shadow: 4px 2px 13px -3px rgba(71, 42, 10, 0.5);
-      box-shadow: 4px 2px 13px -3px rgba(71, 42, 10, 0.5);
-    }
+.cosplan-category {
+  line-height: 28px;
+}
 
-    &--indicator-minutes {
-      bottom: -9px;
-      right: 5px;
-    }
+.edit-field {
+  @apply w-full;
+  &__hidden {
+    @apply invisible block h-0 [&_*]:h-0 ;
   }
+}
 
+.cosplan-editable-info {
+  &__hidden {
+    @apply invisible h-0;
+  }
+}
+
+.cosplan-img-container {
+  height: 100%;
 }
