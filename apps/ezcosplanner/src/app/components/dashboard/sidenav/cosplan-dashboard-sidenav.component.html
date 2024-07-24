@@ -1,0 +1,26 @@
+<mat-sidenav-container class="cosplan-dashboard-sidenav-container">
+    <mat-sidenav #sidenav mode="side" opened class="cosplan-dashboard-sidenav border-opacity-5 px-5"
+        [fixedInViewport]="false">
+        <button [routerLink]="['/']" mat-icon-button class="button-icon button-icon-absolute">
+            <mat-icon class=" button-icon__icon" aria-hidden="false" aria-label="Retour liste des cosplans"
+                fontIcon="arrow_back"></mat-icon>
+        </button>
+        <div class="flex flex-col h-full justify-center items-center gap-9">
+            <ng-container *ngTemplateOutlet="iconButton, context: {icon: 'dashboard'}" />
+            <ng-container *ngTemplateOutlet="iconButton, context: {icon: 'checklist'}" />
+            <ng-container *ngTemplateOutlet="iconButton, context: {icon: 'construction'}" />
+            <ng-container *ngTemplateOutlet="iconButton, context: {icon: 'receipt_long'}" />
+            <ng-container *ngTemplateOutlet="iconButton, context: {icon: 'more_time'}" />
+        </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="cosplan-dashboard-sidenav__content">
+        <ng-content />
+    </mat-sidenav-content>
+</mat-sidenav-container>
+
+<ng-template #iconButton let-icon="icon">
+    <button mat-icon-button class="button-icon button-primary">
+        <mat-icon class="button-icon__icon" aria-hidden="false" [fontIcon]="icon"></mat-icon>
+    </button>
+</ng-template>

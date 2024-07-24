@@ -1,9 +1,23 @@
-<mat-toolbar class="flex justify-between mat-primary">
-    <button class="button-primary" mat-icon-button aria-label="icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span class="mat-primary">Ez Cosplanner</span>
-    <button mat-icon-button class="person-icon" aria-label="icon-button with person icon">
-      <mat-icon>person</mat-icon>
-    </button>
+<mat-toolbar class="flex flelx-col justify-between app-toolbar">
+  <button class="button-icon" mat-icon-button aria-label="icon-button with menu icon">
+    <mat-icon class="button-icon__icon">menu</mat-icon>
+  </button>
+  <div class="relative flex flex-row flex flex-wrap mt-6 app-toolbar__title">
+    <img class="mb-auto" mat-card-image [ngSrc]="'/assets/cat_smile_secondary_256.png'" alt="app title image" width="35"
+      height="35" />
+
+    <div>
+
+      <h1 class="px-16 app-toolbar__title--name">Ez Cosplanner <sup class="absolute app-toolbar__title--heart">❤︎</sup>
+      </h1>
+      <span class="px-6 pt-4 app-toolbar__title--subtitle">Cutest cosplanner euw</span>
+    </div>
+    <img class="mb-auto" [ngSrc]="'/assets/cat_smile_secondary_256.png'" alt="app title image" width="35" height="35" />
+
+    <mat-divider></mat-divider>
+  </div>
+
+  <button mat-icon-button class="button-icon" aria-label="icon-button with person icon">
+    <mat-icon class="button-icon__icon">person</mat-icon>
+  </button>
 </mat-toolbar>

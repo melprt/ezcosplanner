@@ -4,13 +4,13 @@
     <mat-card-title>{{ cosplan.name }}</mat-card-title>
     <mat-card-subtitle>{{cosplan.status}} cosplan.progression</mat-card-subtitle>
   </mat-card-header>
-  <mat-card-content class="min-h-0 min-w-0 flex flex-1 relative">
-    <img mat-card-image [ngSrc]="'/assets/unicornCat.png'" alt="Cosplan image" fill/>
+  <mat-card-content class="min-h-0 min-w-0 flex flex-1 relative m-20">
+    <img mat-card-image [ngSrc]="'/assets/cat_smile_secondary_256.png'" alt="Cosplan image" fill />
   </mat-card-content>
 
   <mat-card-actions [align]="'end'">
-    <button mat-icon-button class="card-action-button">
-      <mat-icon class="card-action-button__icon card-action-button__icon--edit" aria-hidden="false" aria-label="Edition"
+    <button [routerLink]="['dashboard', cosplan.id]" mat-icon-button class="button-icon">
+      <mat-icon class="button-icon__icon button-icon__icon--edit" aria-hidden="false" aria-label="Edition"
         fontIcon="edit"></mat-icon>
     </button>
   </mat-card-actions>

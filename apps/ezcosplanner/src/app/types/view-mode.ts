@@ -1,0 +1,1 @@
+export type ViewMode = 'CREATE' | 'EDIT' | 'LOADING';

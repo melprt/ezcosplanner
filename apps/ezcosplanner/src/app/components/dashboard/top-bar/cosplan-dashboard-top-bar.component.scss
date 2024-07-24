@@ -1,0 +1,26 @@
+@use '../../../styles/button-icon.scss' as button-icon;
+
+@include button-icon.button-icon(30px, 66px);
+
+.dashboard-top-bar {
+  background-color: #fffbff;
+  -webkit-box-shadow: 4px 2px 13px -3px rgba(71, 42, 10, 0.5);
+  box-shadow: 4px 2px 13px -3px rgba(71, 42, 10, 0.5);
+  
+  .cosplan-status-icon {
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+
+    &__status-PENDING {
+      background-color: theme('colors.neutral');
+    }
+
+    &__status-COMPLETE {
+      background-color: theme('colors.primary-dark');
+    }
+    &__status-IN_PROGRESS {
+      background-color: #8eedcc;
+    }
+  }
+}

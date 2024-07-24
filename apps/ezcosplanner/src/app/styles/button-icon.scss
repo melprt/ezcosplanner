@@ -1,0 +1,13 @@
+
+@mixin button-icon($font-size, $layer-font-size) {
+    .button-icon {
+        width: $layer-font-size;
+        height: $layer-font-size;
+
+        &__icon {
+            font-size: $font-size;
+            width: $font-size;
+            height: $font-size;
+        }
+    }
+}
