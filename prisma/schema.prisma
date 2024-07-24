@@ -34,9 +34,9 @@ model Cosplan {
   complexity Int?
   deadline   DateTime?
   image      String?           @db.VarChar(255)
-  parts      Part[]
+  parts      Part[]            
   references Reference[]
-  cosmaker   User              @relation(fields: [cosmakerId], references: [id])
+  cosmaker   User              @relation(fields: [cosmakerId], references: [id], onDelete: Cascade)
   cosmakerId Int
 }
 
@@ -44,11 +44,11 @@ model Part {
   id           Int           @id @default(autoincrement())
   updatedAt    DateTime      @updatedAt
   name         String        @db.VarChar(255)
-  workingTimes WorkingTime[]
+  timeEntries  TimeEntry[]
   wipPictures  WipPicture[]
   tasks        Task[]
   materials    Material[]
-  cosplan      Cosplan       @relation(fields: [cosplanId], references: [id])
+  cosplan      Cosplan       @relation(fields: [cosplanId], references: [id], onDelete: Cascade)
   cosplanId    Int
 }
 
@@ -56,17 +56,17 @@ model Reference {
   id        Int     @id @default(autoincrement())
   url       String? @db.VarChar(255)
   image     String? @db.VarChar(255)
-  cosplan   Cosplan @relation(fields: [cosplanId], references: [id])
+  cosplan   Cosplan @relation(fields: [cosplanId], references: [id], onDelete: Cascade)
   cosplanId Int
 }
 
-model WorkingTime {
+model TimeEntry {
   id     Int      @id @default(autoincrement())
   day    DateTime
   time   BigInt
-  part   Part?    @relation(fields: [partId], references: [id])
+  part   Part?    @relation(fields: [partId], references: [id], onDelete: Cascade)
   partId Int?
-  task   Task?    @relation(fields: [taskId], references: [id])
+  task   Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId Int?
 }
 
@@ -76,7 +76,7 @@ model WipPicture {
   image     String   @db.VarChar(255)
   title     String?  @db.VarChar(255)
   smallDesc String?  @db.VarChar(255)
-  part      Part     @relation(fields: [partId], references: [id])
+  part      Part     @relation(fields: [partId], references: [id], onDelete: Cascade)
   partId    Int
 }
 
@@ -87,18 +87,18 @@ model Material {
   price    Float
   category MaterialCategory
   url      String?            @db.VarChar(255)
-  part     Part               @relation(fields: [partId], references: [id])
+  part     Part               @relation(fields: [partId], references: [id], onDelete: Cascade)
   partId   Int
 }
 
 model Task {
   id           Int           @id @default(autoincrement())
   updatedAt    DateTime      @updatedAt
-  title        String?       @db.VarChar(255)
+  name         String?       @db.VarChar(255)
   completed    Boolean       @default(false)
   description  String?       @db.VarChar(255)
-  workingTimes WorkingTime[]
-  part         Part          @relation(fields: [partId], references: [id])
+  timeEntries  TimeEntry[]
+  part         Part          @relation(fields: [partId], references: [id], onDelete: Cascade)
   partId       Int
 }
 

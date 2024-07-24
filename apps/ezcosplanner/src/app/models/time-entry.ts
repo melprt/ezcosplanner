@@ -1,4 +1,4 @@
-export interface WorkingTime {
+export interface TimeEntry {
     id: number;
     day: Date;
     time: number; 

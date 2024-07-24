@@ -1,10 +1,10 @@
-import { WorkingTime } from "./working-time";
+import { TimeEntry } from "./time-entry";
 
 export interface Task {
     id: number;
     updatedAt: Date;
-    title: string|null; 
+    name: string|null; 
     completed: boolean;
     description: string|null;
-    workingTimes: WorkingTime[];
+    workingTimes: TimeEntry[];
 }
