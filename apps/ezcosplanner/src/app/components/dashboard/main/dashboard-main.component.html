@@ -66,20 +66,23 @@
                 @if (cosplan.status === 'PENDING') {
                     <button mat-fab
                         [disabled]="editView()"
+                        (click)="editCosplanStatus('IN_PROGRESS')"
                         class="!rounded-full cosplan-actions__button button-icon shadow-md" aria-label="button start cosplan" matTooltip="Commencer le cosplan">
                         <mat-icon class="button-icon__icon">play_arrow</mat-icon>
                     </button>
                 } @else {
                     <button mat-fab
                         [disabled]="editView()"
+                        (click)="editCosplanStatus('PENDING')"
                         class="!rounded-full cosplan-actions__button button-icon shadow-md" aria-label="button pause cosplan" matTooltip="Mettre le cosplan en pause">
                         <mat-icon class="button-icon__icon">pause</mat-icon>
                     </button>
                 }
         
                 <button mat-fab
-                    [disabled]="editView()" 
-                    class="!rounded-full cosplan-actions__button button-icon shadow-md" aria-label="button delete cosplan" matTooltip="Supprimer le cosplan">
+                    [disabled]="editView()"
+                    (click)="toggleAlertDialog()" 
+                    class="hover:shadow-none hover:shadow-bg-transparent !rounded-full cosplan-actions__button button-icon shadow-md" aria-label="button delete cosplan" matTooltip="Supprimer le cosplan">
                     <mat-icon class="button-icon__icon">delete</mat-icon>
                 </button>
             </div>

@@ -1,5 +1,5 @@
 import { Cosplan, PrismaClient } from '@prisma/client';
-import { UpdateCosplanBody } from '../schemas/cosplan';
+import { UpdateCosplanBody, UpdateCosplanStatusBody } from '../schemas/cosplan';
 
 export async function findAllCosplans(prisma: PrismaClient) {
   return prisma.cosplan.findMany();
@@ -26,6 +26,32 @@ export async function updateCosplan(
       name,
       fandom,
       category,
+    },
+  });
+}
+
+export async function updateCosplanStatus(
+  prisma: PrismaClient,
+  id: number,
+  { status }: UpdateCosplanStatusBody
+): Promise<Cosplan> {
+  return await prisma.cosplan.update({
+    where: {
+      id,
+    },
+    data: {
+      status,
+    },
+  });
+}
+
+export async function deleteCosplan(
+  prisma: PrismaClient,
+  id: number
+): Promise<void> {
+  await prisma.cosplan.delete({
+    where: {
+      id,
     },
   });
 }

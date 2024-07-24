@@ -20,3 +20,7 @@ export interface CosplanUpdateData {
     fandom: string;
     category: CosplanCategory;
 }
+
+export interface CosplanStatusUpdateData {
+    status: CosplanStatus;
+}

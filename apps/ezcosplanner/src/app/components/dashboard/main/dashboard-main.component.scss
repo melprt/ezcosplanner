@@ -9,6 +9,10 @@
     color: theme("colors.primary-dark");
     border-radius: 100%;
   }
+
+  ::ng-deep .mat-mdc-button-persistent-ripple.mdc-fab__ripple {
+    border-radius: 100%;
+  }
 }
 
 .cosplan-indicators {

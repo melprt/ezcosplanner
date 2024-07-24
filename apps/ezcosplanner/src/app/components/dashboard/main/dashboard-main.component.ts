@@ -34,6 +34,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SimpleSnackbarImgComponent } from './snackbar/simple-snackbar-img.component';
 import { CosplanApiService } from '../../../services/cosplan-api.service';
 import { CosplanService } from '../../../services/cosplan.service';
+import { CosplanStatus } from '../../../types/cosplan-status';
+import { Router } from '@angular/router';
+import {
+  MatDialog,
+} from '@angular/material/dialog';
+import { DialogService } from '../../../services/dialog.service';
 
 @Component({
   standalone: true,
@@ -62,7 +68,11 @@ import { CosplanService } from '../../../services/cosplan.service';
 })
 export class DashboardMainComponent {
   private cosplanApiService = inject(CosplanApiService);
+  private dialogService = inject(DialogService);
   private snackBar = inject(MatSnackBar);
+  private router = inject(Router);
+  readonly dialog = inject(MatDialog);
+
   protected cosplan = inject(CosplanService).cosplan;
   protected viewMode = inject(CosplanService).viewMode;
   protected editView = signal(false);
@@ -99,7 +109,7 @@ export class DashboardMainComponent {
       category: cosplan.category,
     });
   }
-  
+
   toggleEditView(message?: string): void {
     if (message) {
       this.snackBar.openFromComponent(SimpleSnackbarImgComponent, {
@@ -107,13 +117,12 @@ export class DashboardMainComponent {
           snackbarLabel: message,
         },
       });
-  
+
       this.editView.set(true);
     } else {
       this.editView.set(false);
       this.snackBar.dismiss();
     }
-
   }
 
   editCosplan(): void {
@@ -130,6 +139,70 @@ export class DashboardMainComponent {
             console.error(`Error while upading cosplan: ${err}`);
           },
         });
+    }
+  }
+
+  editCosplanStatus(status: CosplanStatus): void {
+    const messageCosplanStatus = this.getMessageCosplanStatus(status);
+    const currentCosplanId = this.cosplan()?.id;
+    if (currentCosplanId) {
+      this.cosplanApiService
+        .updateCosplanStatus$(currentCosplanId, { status })
+        .subscribe({
+          next: (updatedCosplan) => {
+            this.cosplan.set(updatedCosplan);
+            this.snackBar.openFromComponent(SimpleSnackbarImgComponent, {
+              data: {
+                snackbarLabel: `Ton cosplan a bien été ${messageCosplanStatus}`,
+              },
+              duration: 3000,
+            });
+          },
+          error: (err) => {
+            console.error(`Error while upading cosplan: ${err}`);
+          },
+        });
+    }
+  }
+
+  private getMessageCosplanStatus(status: CosplanStatus): string {
+    switch (status) {
+      case 'COMPLETE':
+        return 'terminé';
+      case 'PENDING':
+        return 'mis en pause';
+      case 'IN_PROGRESS':
+        return 'activé';
+      default:
+        return 'mis à jour';
+    }
+  }
+
+  toggleAlertDialog(): void {
+    this.dialogService.openAnimatedDialog(
+      'Suppression cosplan',
+      'Es-tu sûr de vouloir suprimer ton cosplan ?',
+      () => this.deleteCosplan()
+    );
+  }
+
+  deleteCosplan() {
+    const currentCosplanId = this.cosplan()?.id;
+    if (currentCosplanId) {
+      this.cosplanApiService.deleteCosplan$(currentCosplanId).subscribe({
+        next: () => {
+          this.router.navigate(['/']);
+          this.snackBar.openFromComponent(SimpleSnackbarImgComponent, {
+            data: {
+              snackbarLabel: 'Ton cosplan a bien été supprimé',
+            },
+            duration: 3000,
+          });
+        },
+        error: (err) => {
+          console.error(`Error while upading cosplan: ${err}`);
+        },
+      });
     }
   }
 }

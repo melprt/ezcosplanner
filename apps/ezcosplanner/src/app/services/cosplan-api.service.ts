@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Cosplan, CosplanUpdateData } from '../models/cosplan';
+import { Cosplan, CosplanStatusUpdateData, CosplanUpdateData } from '../models/cosplan';
 import { Observable, first, map } from 'rxjs';
 
 @Injectable({
@@ -26,6 +26,18 @@ export class CosplanApiService {
   updateCosplan$(id: number, data: CosplanUpdateData): Observable<Cosplan> {
     return this.http
       .put<Cosplan>(`${this.baseCosplanUrl}/${id}`, data)
+      .pipe(first());
+  }
+
+  updateCosplanStatus$(id: number, data: CosplanStatusUpdateData): Observable<Cosplan> {
+    return this.http
+      .patch<Cosplan>(`${this.baseCosplanUrl}/${id}/status`, data)
+      .pipe(first());
+  }
+
+  deleteCosplan$(id: number) : Observable<void> {
+    return this.http
+      .delete<void>(`${this.baseCosplanUrl}/${id}`)
       .pipe(first());
   }
 }
