@@ -6,5 +6,5 @@ export interface User {
     firstname: string|null;
     lastname: string|null;
     avatar: string|null;
-    cosplans: Cosplan[]|[];
+    cosplans: Cosplan[];
 }

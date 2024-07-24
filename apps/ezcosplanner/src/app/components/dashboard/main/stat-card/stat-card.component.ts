@@ -27,5 +27,5 @@ import {
 export class StatCardComponent {
     @Input({required: true}) stat!: number;
     @Input({required: true}) label!: string;
-    @Input() img: string|null = '/assets/cat_zzz_secondary_256.png';
+    @Input() img = '/assets/cat_zzz_secondary_256.png';
 }

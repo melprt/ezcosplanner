@@ -6,5 +6,6 @@ export interface Material {
     bought: boolean;
     category: MaterialCategory;
     price: number;
+    //TODO check if null or undefined
     url: string|null;
 }

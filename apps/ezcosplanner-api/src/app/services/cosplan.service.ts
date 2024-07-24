@@ -7,7 +7,7 @@ export async function findAllCosplans(prisma: PrismaClient) {
 export async function findCosplanById(prisma: PrismaClient, id: number) {
   return prisma.cosplan.findUnique({
     where: {
-      id: id,
+      id,
     },
   });
 }

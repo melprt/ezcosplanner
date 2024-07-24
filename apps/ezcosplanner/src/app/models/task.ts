@@ -6,5 +6,5 @@ export interface Task {
     title: string|null; 
     completed: boolean;
     description: string|null;
-    workingTimes: WorkingTime[]|[];
+    workingTimes: WorkingTime[];
 }

@@ -7,8 +7,8 @@ export interface Part {
     id: number;
     updatedAt: Date;
     name: string; 
-    wipPictures: WipPicture[]|[];
-    tasks: Task[]|[];
-    workingTimes: WorkingTime[]|[];
-    materials: Material[]|[];
+    wipPictures: WipPicture[];
+    tasks: Task[];
+    workingTimes: WorkingTime[];
+    materials: Material[];
 }

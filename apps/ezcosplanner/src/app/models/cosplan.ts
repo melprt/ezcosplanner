@@ -11,6 +11,6 @@ export interface Cosplan {
     fandom: string|null;
     category: CosplanCategory;
     deadline: Date|null;
-    parts: Part[]|[];
-    reference: Reference[]|[];
+    parts: Part[];
+    reference: Reference[];
 }
