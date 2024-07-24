@@ -102,14 +102,6 @@ export class DashboardMainComponent {
     });
   }
 
-  private initFormValue(cosplan: Cosplan): void {
-    this.cosplanForm.setValue({
-      name: cosplan.name,
-      fandom: cosplan.fandom,
-      category: cosplan.category,
-    });
-  }
-
   toggleEditView(message?: string): void {
     if (message) {
       this.snackBar.openFromComponent(SimpleSnackbarImgComponent, {
@@ -165,19 +157,6 @@ export class DashboardMainComponent {
     }
   }
 
-  private getMessageCosplanStatus(status: CosplanStatus): string {
-    switch (status) {
-      case 'COMPLETE':
-        return 'terminé';
-      case 'PENDING':
-        return 'mis en pause';
-      case 'IN_PROGRESS':
-        return 'activé';
-      default:
-        return 'mis à jour';
-    }
-  }
-
   toggleAlertDialog(): void {
     this.dialogService.openAnimatedDialog(
       'Suppression cosplan',
@@ -204,5 +183,26 @@ export class DashboardMainComponent {
         },
       });
     }
+  }
+
+  private getMessageCosplanStatus(status: CosplanStatus): string {
+    switch (status) {
+      case 'COMPLETE':
+        return 'terminé';
+      case 'PENDING':
+        return 'mis en pause';
+      case 'IN_PROGRESS':
+        return 'activé';
+      default:
+        return 'mis à jour';
+    }
+  }
+
+  private initFormValue(cosplan: Cosplan): void {
+    this.cosplanForm.setValue({
+      name: cosplan.name,
+      fandom: cosplan.fandom,
+      category: cosplan.category,
+    });
   }
 }
