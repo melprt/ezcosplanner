@@ -1,5 +1,5 @@
 export interface Reference {
     id: number;
-    url: string|null;
-    image: string|null; 
+    url?: string|null;
+    image?: File; 
 }

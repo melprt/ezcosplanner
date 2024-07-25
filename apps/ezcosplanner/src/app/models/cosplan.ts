@@ -6,13 +6,13 @@ import { Reference } from './reference';
 export interface Cosplan {
     id: number;
     name: string;
-    image: string|null;
+    image?: File;
     status: CosplanStatus;
     fandom: string;
     category: CosplanCategory;
-    deadline: Date|null;
-    parts: Part[];
-    reference: Reference[];
+    deadline?: Date|null;
+    parts?: Part[];
+    reference?: Reference[];
 }
 
 export interface CosplanUpdateData {
@@ -23,4 +23,8 @@ export interface CosplanUpdateData {
 
 export interface CosplanStatusUpdateData {
     status: CosplanStatus;
+}
+
+export interface CosplanImgUpdateData {
+    image: string;
 }
