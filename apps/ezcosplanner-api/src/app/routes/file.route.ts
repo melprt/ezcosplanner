@@ -8,14 +8,14 @@ export default async function (fastify: FastifyInstance) {
       request: FastifyRequest<{ Params: { fileId: string } }>,
       reply: FastifyReply
     ) => {
-      const streamFile = await getReadStreamFromFileById(fastify.prisma, +request.params.fileId)
+      const streamFile = await getReadStreamFromFileById(fastify.prisma, +request.params.fileId);
       
       if (!streamFile) {
         return reply.status(404).send();
       }
 
       reply.header('Content-Type', streamFile.mimeType);
-      return reply.send(streamFile);
+      return reply.send(streamFile.stream);
     }
   );
 
