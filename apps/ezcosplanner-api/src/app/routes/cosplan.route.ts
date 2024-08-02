@@ -1,5 +1,4 @@
 import { FastifyInstance, FastifyRequest } from 'fastify';
-import { getAllCosplans, getCosplanById } from '../handlers/cosplan.handler';
 import {
   updateCosplanSchema,
   updateCosplanStatusSchema,
@@ -7,16 +6,22 @@ import {
 import { JsonSchemaToTsProvider } from '@fastify/type-provider-json-schema-to-ts';
 import {
   deleteCosplan,
+  findAllCosplans,
+  findCosplanById,
   updateCosplan,
   updateCosplanStatus,
 } from '../services/cosplan.service';
 
 export default async function (fastify: FastifyInstance) {
-  fastify.get('/cosplan', async () => await getAllCosplans(fastify));
+  fastify.get(
+    '/cosplan',
+    async () => ({cosplans: await findAllCosplans(fastify.prisma)})
+  );
+
   fastify.get(
     '/cosplan/:id',
     async (request: FastifyRequest<{ Params: { id: number } }>) => {
-      return await getCosplanById(fastify, +request.params.id);
+      return await findCosplanById(fastify.prisma, +request.params.id);
     }
   );
 
@@ -26,7 +31,7 @@ export default async function (fastify: FastifyInstance) {
       '/cosplan/:id',
       { schema: updateCosplanSchema },
       async (request) =>
-        await updateCosplan(fastify.prisma, request.params.id, request.body)
+        await updateCosplan(fastify.prisma, +request.params.id, request.body)
     );
 
   fastify

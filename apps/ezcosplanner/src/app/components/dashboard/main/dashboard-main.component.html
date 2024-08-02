@@ -1,10 +1,31 @@
 <div [formGroup]="cosplanForm">
     @if (cosplan(); as cosplan) {
-    <div class="grid grid-cols-3 gap-40 mb-40">
-        <div class="col-span-2">
-            <div class="flex flex-col gap-4">
+    <div class="grid grid-cols-4 gap-40 mb-40">
+        <div class="flex flex-col gap-18 col-span-3">
+            <div class="relative flex flex-col gap-4 w-fit">
+                <div class="absolute top-0 right-0 cosplan-actions">
+                    @if (!editView()) {
+                        <button (click)="toggleEditView('Ton cosplan est en mode édition')" mat-fab
+                            class="!rounded-full !shadow-inner cosplan-actions__button button-icon" aria-label="button edit cosplan" matTooltip="Modifier les informations">
+                            <mat-icon class="button-icon__icon">edit</mat-icon>
+                        </button>
+                    } @else {
+                        <button (click)="editCosplan()" mat-fab
+                            [disabled]="cosplanForm.invalid"
+                            class="!rounded-full !shadow-inner mr-4 cosplan-actions__button button-icon" aria-label="button validate cosplan edition" matTooltip="Sauvarder les changements">
+                            <mat-icon class="button-icon__icon">check_small
+                            </mat-icon>
+                        </button>
+                        <button (click)="toggleEditView()" mat-fab
+                            class="!rounded-full !shadow-inner cosplan-actions__button button-icon" aria-label="button cancel edit cosplan" matTooltip="Annuler">
+                            <mat-icon class="button-icon__icon">cancel</mat-icon>
+                        </button>
+                    }
+                </div>
                 <div class="w-fit">
-                    <h1 [ngClass]="{'cosplan-editable-info__hidden': editView()}" class="text-5xl">{{cosplan.name | titlecase }}</h1>
+                    <h1 [ngClass]="{'cosplan-editable-info__hidden': editView()}" class="text-5xl">
+                        {{cosplan.name | titlecase }}
+                    </h1>
                     <mat-form-field [ngClass]="{'edit-field__hidden': !editView()}" class="edit-field" appearance="outline">
                         <mat-label>Nom</mat-label>
                         <input matInput [formControlName]="'name'">
@@ -13,7 +34,7 @@
                 <div class="flex flex-row flex-wrap gap-4">
                     <div class="w-fit">
                         <h2 [ngClass]="{'cosplan-editable-info__hidden': editView()}" class="text-xl">
-                            {{cosplan.fandom | titlecase }}
+                            {{cosplan.fandom | titlecase }}                          
                         </h2>
                         <mat-form-field [ngClass]="{'edit-field__hidden': !editView()}" class="edit-field" appearance="outline">
                             <mat-label>Fandom</mat-label>
@@ -42,53 +63,9 @@
                 <ezc-progress-circle [progress]="100" [label]="'Progression'" [content]="'100%'" />
             </div>
         </div>
-        <div class="flex flex-col gap-12">
-            <div class="flex flex-row gap-9 justify-end cosplan-actions">
-
-                @if (!editView()) {
-                    <button (click)="toggleEditView('Ton cosplan est en mode édition')" mat-fab
-                        class="!rounded-full cosplan-actions__button button-icon shadow-md" aria-label="button edit cosplan" matTooltip="Modifier le cosplan">
-                        <mat-icon class="button-icon__icon">edit</mat-icon>
-                    </button>
-                } @else {
-                    <button (click)="editCosplan()" mat-fab
-                        [disabled]="cosplanForm.invalid"
-                        class="!rounded-full cosplan-actions__button button-icon shadow-md" aria-label="button validate cosplan edition" matTooltip="Sauvarder les changements">
-                        <mat-icon class="button-icon__icon">check_small
-                        </mat-icon>
-                    </button>
-                    <button (click)="toggleEditView()" mat-fab
-                        class="!rounded-full cosplan-actions__button button-icon shadow-md" aria-label="button cancel edit cosplan" matTooltip="Annuler">
-                        <mat-icon class="button-icon__icon">cancel</mat-icon>
-                    </button>
-                }
-
-                @if (cosplan.status === 'PENDING') {
-                    <button mat-fab
-                        [disabled]="editView()"
-                        (click)="editCosplanStatus('IN_PROGRESS')"
-                        class="!rounded-full cosplan-actions__button button-icon shadow-md" aria-label="button start cosplan" matTooltip="Commencer le cosplan">
-                        <mat-icon class="button-icon__icon">play_arrow</mat-icon>
-                    </button>
-                } @else {
-                    <button mat-fab
-                        [disabled]="editView()"
-                        (click)="editCosplanStatus('PENDING')"
-                        class="!rounded-full cosplan-actions__button button-icon shadow-md" aria-label="button pause cosplan" matTooltip="Mettre le cosplan en pause">
-                        <mat-icon class="button-icon__icon">pause</mat-icon>
-                    </button>
-                }
-        
-                <button mat-fab
-                    [disabled]="editView()"
-                    (click)="toggleAlertDialog()" 
-                    class="hover:shadow-none hover:shadow-bg-transparent !rounded-full cosplan-actions__button button-icon shadow-md" aria-label="button delete cosplan" matTooltip="Supprimer le cosplan">
-                    <mat-icon class="button-icon__icon">delete</mat-icon>
-                </button>
-            </div>
-            <div class="relative flex justify-end cosplan-img-container">
-                <img mat-card-image class="object-contain" [ngSrc]="'/assets/cat_smile_secondary_256.png'"
-                    alt="Cosplan image" fill/>
+        <div class="flex flex-col col-span-1">
+            <div class="relative flex flex-col items-center justify-center cosplan-img-container">
+                <ezc-file-upload [existingFile]="cosplan.file" [fileType]="'cosplan'" [entityId]="cosplan.id"></ezc-file-upload>
             </div>
         </div>
     </div>

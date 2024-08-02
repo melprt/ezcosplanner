@@ -1,9 +1,14 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CosplanCardComponent } from '../cosplan-card/cosplan-card.component';
 import { CosplanApiService } from '../../services/cosplan-api.service';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { CosplanAddCardComponent } from '../cosplan-add-card/cosplan-add-card.component';
+import { Cosplan } from '../../models/cosplan';
 
 @Component({
   selector: 'ezc-cosplan-list',
@@ -15,5 +20,15 @@ import { CosplanAddCardComponent } from '../cosplan-add-card/cosplan-add-card.co
 })
 export class CosplanListComponent {
   private cosplanApiService = inject(CosplanApiService);
-  cosplans = toSignal(this.cosplanApiService.getAllCosplans$());
+  cosplans = signal<Cosplan[] | null>(null);
+
+  constructor() {
+    this.setCosplans();
+  }
+
+  setCosplans(): void {
+    this.cosplanApiService
+      .getAllCosplans$()
+      .subscribe((res) => this.cosplans.set(res));
+  }
 }

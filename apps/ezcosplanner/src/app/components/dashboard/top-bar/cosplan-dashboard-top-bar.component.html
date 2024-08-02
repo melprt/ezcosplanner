@@ -1,9 +1,4 @@
 <mat-toolbar class="flex flex row flex-wrap justify-between sticky top-0 z-50 dashboard-top-bar">
-  <div class="breadcrumb">
-    <!-- Todo -->
-  </div>
-
-
   @switch(viewMode()) {
     @case ('CREATE') {
     <ng-container *ngTemplateOutlet="statusIcon; context: {status: 'PENDING'}" />
@@ -15,10 +10,34 @@
     <!-- todo add skeleton loader (ngx-skeleton-loader) -->
     }
   }
-
+  <div class="breadcrumb">
+    <!-- Todo -->
+  </div>
+  <div class="flex flex-1 items-center justify-end gap-4">
+     @if (cosplan(); as cosplan) {
+        @if (cosplan.status === 'PENDING') {
+          <button mat-raised-button 
+              (click)="editCosplanStatus('IN_PROGRESS')"
+              class="hover:shadow-none hover:shadow-bg-transparent shadow-md cosplan-actions__button-delete" aria-label="button delete cosplan">
+              Commencer le cosplan
+          </button>
+      } @else {
+          <button mat-raised-button
+              (click)="editCosplanStatus('PENDING')"
+              class="hover:shadow-none hover:shadow-bg-transparent shadow-md cosplan-actions__button-delete" aria-label="button delete cosplan">
+              Mettre le cosplan en pause
+          </button>
+      }
+      <button mat-raised-button
+        (click)="toggleAlertDialog()" 
+        class="hover:shadow-none hover:shadow-bg-transparent shadow-md cosplan-actions__button-delete" aria-label="button delete cosplan">
+        Supprimer le cosplan
+    </button>
+     }
+  </div>
 </mat-toolbar>
 
-
 <ng-template #statusIcon let-status="status">
-  <span class="cosplan-status-icon cosplan-status-icon__status-{{status}}"></span>
+  <!-- todo translate status -->
+  <span class="cosplan-status-icon cosplan-status-icon__status-{{status}}"  matTooltip="Cosplan {{cosplan()?.status ?? ''}}"></span>
 </ng-template>

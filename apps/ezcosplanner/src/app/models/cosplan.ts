@@ -1,12 +1,13 @@
 import { CosplanCategory } from '../types/cosplan-category';
 import { CosplanStatus } from '../types/cosplan-status';
+import { UploadedFile } from './uploaded-file';
 import { Part } from './part';
 import { Reference } from './reference';
 
 export interface Cosplan {
     id: number;
     name: string;
-    image?: File;
+    file: UploadedFile | null;
     status: CosplanStatus;
     fandom: string;
     category: CosplanCategory;

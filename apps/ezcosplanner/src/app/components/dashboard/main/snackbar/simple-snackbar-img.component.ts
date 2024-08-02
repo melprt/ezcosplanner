@@ -1,9 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_SNACK_BAR_DATA,
@@ -20,8 +16,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SimpleSnackbarImgComponent {
-
-  data: {snackbarLabel: string} = inject(MAT_SNACK_BAR_DATA);
+  data: { snackbarLabel: string; error?: boolean } = inject(MAT_SNACK_BAR_DATA);
 
   snackBarRef = inject(MatSnackBarRef);
 }

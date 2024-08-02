@@ -1,0 +1,38 @@
+@if (status() === 'viewing') {
+    @if (displayedFile(); as displayedFileId) {
+        <img mat-card-image class="object-contain" [src]="'http://localhost:3000/file/' + displayedFileId + '/stream'"
+            alt="image" fill />
+        <ezc-file-action-buttons (onClickAction)="actionImage($event)" />
+    }
+}
+
+<div class="h-full" [ngClass]="{'border-2 border-dashed': status() === 'uploading'}">
+    <div class="relative flex flex-col justify-center items-center h-full w-full dropzone"
+        [ngClass]="{hidden: status() !== 'uploading'}">
+        <img [ngSrc]="'/assets/cat_photo_secondary_256.png'" alt="cosplan image upload icon" width="75" height="75" />
+
+        <input #fileDropRef class="hidden form-control" type="file" (change)="selectFile($event)"
+        accept="image/*">
+        <!-- TODO drag and drop -->
+        <!-- <h3>Fait glisser ton image</h3> -->
+        <!-- <h3>ou</h3> -->
+        <h3>Choisi une image pour ton cosplan !</h3>
+        <label class="hover:cursor-pointer label-browse" for="fileDropRef" (click)="openFileBrowser()">Parcourir</label>
+    </div>
+
+    <div [ngClass]="{'hidden': status() !== 'cropping'}">
+        <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="246/342"
+            format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"></image-cropper>
+
+        <div class="absolute bottom-0 right-0">
+            <button (click)="cancel()" mat-icon-button class="button-icon">
+                <mat-icon class="button-icon__icon button-icon__icon--edit" aria-hidden="false"
+                    aria-label="cancel cosplan image" fontIcon="cancel"></mat-icon>
+            </button>
+            <button (click)="uploadFile()" mat-icon-button class="button-icon">
+                <mat-icon class="button-icon__icon button-icon__icon--edit" aria-hidden="false"
+                    aria-label="confirm cosplan image" fontIcon="check_circle"></mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

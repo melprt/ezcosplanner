@@ -46,3 +46,6 @@ Thumbs.db
 db
 
 .env
+/uploads
+
+ez_cosplanner.session.sql

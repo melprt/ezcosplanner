@@ -5,6 +5,7 @@ import { CosplanDashboardLayoutComponent } from './components/layout/dasboard-la
 import { DashboardMainComponent } from './components/dashboard/main/dashboard-main.component';
 import { CosplanService } from './services/cosplan.service';
 import { cosplanViewGuard } from './guards/cosplan-view.guard';
+import { FileApiService } from './services/file-api.service';
 
 export const appRoutes: Route[] = [
   {
@@ -28,6 +29,7 @@ export const appRoutes: Route[] = [
         path: '',
         title: 'Dashboard',
         component: DashboardMainComponent,
+        providers: [FileApiService],
       },
     ],
   },

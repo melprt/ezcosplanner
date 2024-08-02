@@ -1,7 +1,9 @@
+import { UploadedFile } from "./uploaded-file";
+
 export interface WipPicture {
     id: number;
     createdAt: Date;
-    image: File;
+    file: UploadedFile;
     title?: string|null;
     smallDesc?: string|null;
 }
