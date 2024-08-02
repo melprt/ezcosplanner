@@ -1,0 +1,12 @@
+@use '../../../styles/button-icon.scss' as button-icon;
+
+@include button-icon.button-icon(25px, 38px);
+
+.button-icon__icon {
+    color: theme("colors.secondary-dark");
+    border-radius: 100%;
+
+    ::ng-deep .mat-mdc-button-persistent-ripple.mdc-fab__ripple {
+        border-radius: 100%;
+    }
+}

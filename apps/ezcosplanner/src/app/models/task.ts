@@ -3,8 +3,8 @@ import { TimeEntry } from "./time-entry";
 export interface Task {
     id: number;
     updatedAt: Date;
-    name: string|null; 
+    name: string; 
     completed: boolean;
-    description: string|null;
-    workingTimes: TimeEntry[];
+    description?: string|null;
+    TimeEntries?: TimeEntry[];
 }

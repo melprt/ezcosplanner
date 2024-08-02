@@ -1,17 +1,31 @@
-<mat-card appearance="outlined" class="cosplan-card flex flex-col justify-between">
-  <mat-card-header>
-    <div mat-card-avatar class="cosplan-image"></div>
-    <mat-card-title>{{ cosplan.name }}</mat-card-title>
-    <mat-card-subtitle>{{cosplan.status}} cosplan.progression</mat-card-subtitle>
+<mat-card appearance="outlined" class="flex flex-col justify-between cosplan-card">
+  <mat-card-header class="flex flex-col cosplan-card__header">
+    <mat-card-title>
+      <h1>{{ cosplan.name | titlecase }}</h1>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <h2 class="m-0">{{cosplan.status}} cosplan.progression</h2>
+    </mat-card-subtitle>
+    <mat-divider class="w-3/12 divider !my-[20px]"></mat-divider>
   </mat-card-header>
-  <mat-card-content class="min-h-0 min-w-0 flex flex-1 relative m-20">
-    <img mat-card-image class="object-contain" [ngSrc]="'/assets/cat_smile_secondary_256.png'" alt="Cosplan image" fill />
+  <mat-card-content class="min-h-0 min-w-0 flex justify-center items-center relative">
+    @if (cosplan.file; as cosplanImage) {
+      <img mat-card-image class="object-contain mx-auto max-h-full" [src]="'http://localhost:3000/file/' + cosplanImage.id + '/stream'"
+        alt="cosplan image" />
+    } @else {
+      <img mat-card-image class="object-contain mx-auto" [src]="'/assets/cat_smile_secondary_256.png'" alt="Cosplan image" />
+    }
   </mat-card-content>
 
-  <mat-card-actions [align]="'end'">
+  <mat-card-actions [align]="'end'" class="flex flex-col gap-4">
     <button [routerLink]="['dashboard', cosplan.id]" mat-icon-button class="button-icon">
-      <mat-icon class="button-icon__icon button-icon__icon--edit" aria-hidden="false" aria-label="Edition"
+      <mat-icon class="button-icon__icon button-icon__icon--edit" aria-hidden="false" aria-label="Edit cosplan icon"
         fontIcon="edit"></mat-icon>
+    </button>
+    
+    <button (click)="toggleAlertDialog()" mat-icon-button class="button-icon">
+      <mat-icon class="button-icon__icon button-icon__icon--edit" aria-hidden="false" aria-label="delete cosplan icon"
+        fontIcon="delete"></mat-icon>
     </button>
   </mat-card-actions>
 </mat-card>

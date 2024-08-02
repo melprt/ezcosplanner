@@ -2,4 +2,4 @@
 @use '../../styles/button-icon.scss' as button-icon;
 
 @include card-theme.card-content();
-@include button-icon.button-icon(48px, 61px);
+@include button-icon.button-icon(40px, 53px);

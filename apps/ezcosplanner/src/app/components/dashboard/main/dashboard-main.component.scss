@@ -1,12 +1,11 @@
 
 @use '../../../styles/button-icon.scss' as button-icon;
 
-@include button-icon.button-icon(40px, 53px);
+@include button-icon.button-icon(25px, 38px);
 
 .cosplan-actions {
   &__button {
-    background-color: #ffecef;
-    color: theme("colors.primary-dark");
+    color: theme("colors.secondary-dark");
     border-radius: 100%;
   }
 
@@ -36,6 +35,6 @@
   }
 }
 
-.cosplan-img-container {
+.cosplan-img-container, .cosplan-img-container > * {
   height: 100%;
 }

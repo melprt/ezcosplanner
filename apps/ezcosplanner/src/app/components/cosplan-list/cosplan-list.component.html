@@ -1,7 +1,7 @@
 
 <div class="flex flex-row gap-[150px] min-w-0 flex-wrap">
     @for (cosplan of cosplans(); track cosplan.id) {
-        <ezc-cosplan-card [cosplan]="cosplan"/>
+        <ezc-cosplan-card (onDelete)="setCosplans()" [cosplan]="cosplan"/>
     }
     <ezc-cosplan-add-card></ezc-cosplan-add-card>
 </div>

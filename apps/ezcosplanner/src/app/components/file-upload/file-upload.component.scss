@@ -1,0 +1,7 @@
+@use '../../styles/button-icon.scss' as button-icon;
+
+@include button-icon.button-icon(40px, 53px);
+
+.label-browse {
+    color: theme('colors.primary');
+}
