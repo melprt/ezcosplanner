@@ -1,6 +1,20 @@
 import { CosplanCategory as CosplanCategoryEnum, CosplanStatus as CosplanStatusEnum } from '@prisma/client';
 import { FromSchema } from 'json-schema-to-ts';
 
+// const properties = {
+//   name: {
+//     type: 'string'
+//   },
+//   fandom: {
+//     type: 'string'
+//   },
+//   category: {
+//     type: 'string',
+//     enum: Object.values(CosplanCategoryEnum)
+//   },
+// };  
+
+
 export const body = {
   type: 'object',
   required: ['name', 'fandom', 'category'],
@@ -15,7 +29,29 @@ export const body = {
       type: 'string',
       enum: Object.values(CosplanCategoryEnum)
     },
-  },
+  }
+} as const;
+
+export const createBody = {
+  type: 'object',
+  required: ['name', 'fandom', 'category'],
+  // properties: {...properties, fileId: {type: 'number'}}
+  properties: {
+    name: {
+      type: 'string'
+    },
+    fandom: {
+      type: 'string'
+    },
+    category: {
+      type: 'string',
+      enum: Object.values(CosplanCategoryEnum)
+    },
+    fileId: {
+      type: 'number'
+    }
+  }
+  
 } as const;
 
 export const statusBody = {
@@ -52,6 +88,14 @@ export const updateCosplanStatusSchema = {
   }
 } as const;
 
+export const createCosplanStatusSchema = {
+  body,
+  params: {
+    type: 'object',
+  }
+} as const;
 
+
+export type CreateCosplanBody = FromSchema<typeof createBody>;
 export type UpdateCosplanBody = FromSchema<typeof body>;
 export type UpdateCosplanStatusBody = FromSchema<typeof statusBody>;

@@ -32,20 +32,25 @@ export async function createFile(
   prisma: PrismaClient,
   path: string,
   mimeType: string,
-  objectId: number,
-  fileType: FileType
+  fileType: FileType,
+  objectId?: number | null
 ): Promise<UploadedFile> {
+  let connection = {};
+  if (objectId) {
+    connection = {
+      connect: {
+        id: objectId,
+      },
+    };
+  }
+
   switch (fileType) {
     case 'cosplan':
       return await prisma.uploadedFile.create({
         data: {
           path,
           mimeType,
-          cosplan: {
-            connect: {
-              id: objectId,
-            },
-          },
+          cosplan: connection,
         },
         include: {
           cosplan: true,
@@ -57,11 +62,7 @@ export async function createFile(
         data: {
           path,
           mimeType,
-          reference: {
-            connect: {
-              id: objectId,
-            },
-          },
+          reference: connection,
         },
         include: {
           reference: true,
@@ -73,11 +74,7 @@ export async function createFile(
         data: {
           path,
           mimeType,
-          wipPicture: {
-            connect: {
-              id: objectId,
-            },
-          },
+          wipPicture: connection,
         },
         include: {
           wipPicture: true,
@@ -90,15 +87,19 @@ export async function createFile(
 export async function saveFile(
   prisma: PrismaClient,
   data: MultipartFile | undefined
-): Promise<UploadedFile|null> {
+): Promise<UploadedFile | null> {
   if (data) {
     const pump = util.promisify(pipeline);
     const entityId = data.fields.entityId;
     const fileType = data.fields.fileType;
+    let entityIdValue = null;
 
-    if (entityId && fileType) {
-      const entityIdValue = (entityId as MultipartValue<string>).value;
+    if (fileType) {
       const fileTypeValue = (fileType as MultipartValue<FileType>).value;
+
+      if (entityId) {
+        entityIdValue = +(entityId as MultipartValue<string>).value;
+      }
 
       const uploadedFilePath = `./uploads/${fileTypeValue}/${data.filename}`;
       await pump(data.file, fs.createWriteStream(uploadedFilePath));
@@ -107,8 +108,8 @@ export async function saveFile(
         prisma,
         uploadedFilePath,
         data.mimetype,
-        +entityIdValue,
-        fileTypeValue
+        fileTypeValue,
+        entityIdValue
       );
     }
   }
@@ -117,8 +118,17 @@ export async function saveFile(
 
 export async function deleteFile(
   prisma: PrismaClient,
-  id: number
+  id: number,
+  path: string
 ): Promise<void> {
+  fs.unlink(path, (err) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.error(`Couln't delete file: ${path}`);
+    }
+  });
+
   await prisma.uploadedFile.delete({
     where: {
       id,

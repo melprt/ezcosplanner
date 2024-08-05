@@ -6,25 +6,26 @@ import {
   inject,
   input,
   Input,
+  output,
   signal,
   ViewChild,
 } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { FileApiService } from '../../services/file-api.service';
+import { FileApiService } from '../../../services/file-api.service';
 import { MatButtonModule } from '@angular/material/button';
 import { ImageCropperComponent, ImageCroppedEvent } from 'ngx-image-cropper';
-import { blobToFile } from '../../utils/file.utils';
+import { blobToFile } from '../../../utils/file.utils';
 import { MatIcon } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SimpleSnackbarImgComponent } from '../dashboard/main/snackbar/simple-snackbar-img.component';
-import { FileType } from '../../types/file-type';
-import { FileActionButtonsComponent } from './file-action-buttons/file-action-buttons.component';
-import { UploadedFile } from '../../models/uploaded-file';
-import { FileUploadStatus, FileUploadAction } from './file-upload.component.d';
-import { DialogService } from '../../services/dialog.service';
+import { SimpleSnackbarImgComponent } from '../../dashboard/main/snackbar/simple-snackbar-img.component';
+import { FileType } from '../../../types/file-type';
+import { FileActionButtonsComponent } from '../file-action-buttons/file-action-buttons.component';
+import { UploadedFile } from '../../../models/uploaded-file';
+import { FileUploadStatus, FileUploadAction } from '../file-upload.component';
+import { DialogService } from '../../../services/dialog.service';
 
 @Component({
-  selector: 'ezc-file-upload',
+  selector: 'ezc-crop-file-upload',
   standalone: true,
   imports: [
     CommonModule,
@@ -34,20 +35,20 @@ import { DialogService } from '../../services/dialog.service';
     MatIcon,
     FileActionButtonsComponent,
   ],
-  templateUrl: './file-upload.component.html',
-  styleUrl: './file-upload.component.scss',
+  templateUrl: './crop-file-upload.component.html',
+  styleUrl: './crop-file-upload.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FileUploadComponent {
+export class CropFileUploadComponent {
   @Input({ required: true }) fileType!: FileType;
-  @Input({ required: true }) entityId!: number;
+  @Input() entityId?: number;
   existingFile = input<UploadedFile | null>(null);
 
   displayedFile = computed(
-    () => this.uploadedFileId() ?? this.existingFile()?.id
+    () => this.uploadedFile() ?? this.existingFile()
   );
 
-  uploadedFileId = signal<number | null>(null);
+  uploadedFile = signal<UploadedFile | null>(null);
 
   status = computed<FileUploadStatus>(() => this.computeStatus());
   cropping = signal<boolean>(false);
@@ -61,6 +62,8 @@ export class FileUploadComponent {
   private fileName: string | null = null;
   private snackBar = inject(MatSnackBar);
   private dialogService = inject(DialogService);
+  fileIdOutput = output<number>();
+  
 
   openFileBrowser(): void {
     this.inputImgRef?.nativeElement?.click();
@@ -100,19 +103,23 @@ export class FileUploadComponent {
       this.fileUploadService
         .saveFile$(
           blobToFile(this.blob, this.fileName),
-          this.entityId,
-          this.fileType
+          this.fileType,
+          this.entityId
         )
         .subscribe((fileRes) => {
           this.editing.set(false);
           this.cropping.set(false);
-          this.uploadedFileId.set(fileRes);
-          this.snackBar.openFromComponent(SimpleSnackbarImgComponent, {
-            data: {
-              snackbarLabel: 'Ton image a bien été enregistrée',
-            },
-            duration: 3000,
-          });
+          this.uploadedFile.set(fileRes);
+          this.fileIdOutput.emit(fileRes.id);
+
+          if (this.entityId) {
+            this.snackBar.openFromComponent(SimpleSnackbarImgComponent, {
+              data: {
+                snackbarLabel: 'Ton image a bien été enregistrée',
+              },
+              duration: 3000,
+            });
+          }
         });
     }
   }
@@ -132,10 +139,10 @@ export class FileUploadComponent {
   }
 
   private deleteImage (): void {
-    const fileId = this.displayedFile();
-    if (fileId) {
+    const file = this.displayedFile();
+    if (file) {
       // Suggestion: on delete or other operations should trigger whole cosplan dashboard refresh data
-      this.fileUploadService.deleteFile$(fileId).subscribe(() => {
+      this.fileUploadService.deleteFile$(file.id, file.path).subscribe(() => {
         this.resetImgBrowse();
         this.snackBar.openFromComponent(SimpleSnackbarImgComponent, {
           data: {
@@ -167,7 +174,7 @@ export class FileUploadComponent {
   }
 
   private resetImgBrowse(): void {
-    this.uploadedFileId.set(null);
+    this.uploadedFile.set(null);
     this.blob = null;
     this.editing.set(true);
   }

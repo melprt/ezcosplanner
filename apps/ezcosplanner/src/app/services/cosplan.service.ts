@@ -3,11 +3,20 @@ import { CosplanApiService } from './cosplan-api.service';
 import { Cosplan } from '../models/cosplan';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { ViewMode } from '../types/view-mode';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { CosplanForm } from '../types/cosplan-form';
+import { InferedFormGroup } from '../utils/form.utils';
 
 @Injectable()
 export class CosplanService {
   cosplan = signal<Cosplan | null | undefined>(undefined);
-  viewMode: Signal<ViewMode> = computed(() => this.computeViewMode(this.cosplan()));
+  viewMode: Signal<ViewMode> = computed(() =>
+    this.computeViewMode(this.cosplan())
+  );
 
   private cosplanApiService = inject(CosplanApiService);
 
@@ -28,6 +37,23 @@ export class CosplanService {
     return of(null);
   }
 
+  getCosplanForm(): FormGroup<InferedFormGroup<CosplanForm>> {
+    const form = new FormGroup<InferedFormGroup<CosplanForm>>({
+      name: new FormControl('', {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
+      fandom: new FormControl('', {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
+      category: new FormControl('OTHER', {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
+    });
+    return form;
+  }
 
   computeViewMode(cosplan: Cosplan | null | undefined): ViewMode {
     if (cosplan) {

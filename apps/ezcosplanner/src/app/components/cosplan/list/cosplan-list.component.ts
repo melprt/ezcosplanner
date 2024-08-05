@@ -5,10 +5,10 @@ import {
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CosplanCardComponent } from '../cosplan-card/cosplan-card.component';
-import { CosplanApiService } from '../../services/cosplan-api.service';
-import { CosplanAddCardComponent } from '../cosplan-add-card/cosplan-add-card.component';
-import { Cosplan } from '../../models/cosplan';
+import { CosplanCardComponent } from '../card/cosplan-card.component';
+import { CosplanApiService } from '../../../services/cosplan-api.service';
+import { CosplanAddCardComponent } from '../add-card/cosplan-add-card.component';
+import { Cosplan } from '../../../models/cosplan';
 
 @Component({
   selector: 'ezc-cosplan-list',

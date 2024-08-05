@@ -1,10 +1,12 @@
 import { FastifyInstance, FastifyRequest } from 'fastify';
 import {
+  createCosplanStatusSchema,
   updateCosplanSchema,
   updateCosplanStatusSchema,
 } from '../schemas/cosplan';
 import { JsonSchemaToTsProvider } from '@fastify/type-provider-json-schema-to-ts';
 import {
+  createCosplan,
   deleteCosplan,
   findAllCosplans,
   findCosplanById,
@@ -32,6 +34,15 @@ export default async function (fastify: FastifyInstance) {
       { schema: updateCosplanSchema },
       async (request) =>
         await updateCosplan(fastify.prisma, +request.params.id, request.body)
+    );
+
+    fastify
+    .withTypeProvider<JsonSchemaToTsProvider>()
+    .post(
+      '/cosplan',
+      { schema: createCosplanStatusSchema },
+      async (request) =>
+        await createCosplan(fastify.prisma, request.body)
     );
 
   fastify

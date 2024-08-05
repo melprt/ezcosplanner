@@ -29,6 +29,12 @@ export class CosplanApiService {
       .pipe(first());
   }
 
+  createCosplan$(data: CosplanUpdateData): Observable<Cosplan> {
+    return this.http
+      .post<Cosplan>(`${this.baseCosplanUrl}`, data)
+      .pipe(first());
+  }
+
   updateCosplanStatus$(id: number, data: CosplanStatusUpdateData): Observable<Cosplan> {
     return this.http
       .patch<Cosplan>(`${this.baseCosplanUrl}/${id}/status`, data)
