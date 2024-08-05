@@ -31,9 +31,10 @@ import { CropFileUploadComponent } from '../../file-upload/crop-file-upload/crop
 import { DialogService } from '../../../services/dialog.service';
 import { AddCosplanDialogComponent } from './add-cosplan-dialog/add-cosplan-dialog.component';
 import { DialogMaxWidth } from '../../../enums/dialog.enum';
-import { first } from 'rxjs';
+import { filter, first } from 'rxjs';
 import { AddCosplanDialogRes } from './add-cosplan-dialog/add-cosplan.dialog.d';
 import { CosplanForm } from '../../../types/cosplan-form';
+import { NavigationEnd, Router, RouterEvent } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -64,6 +65,7 @@ import { CosplanForm } from '../../../types/cosplan-form';
 export class DashboardMainComponent {
   private cosplanApiService = inject(CosplanApiService);
   private snackBar = inject(MatSnackBar);
+  private router = inject(Router);
   readonly dialog = inject(MatDialog);
   readonly dialogService = inject(DialogService);
 
@@ -113,6 +115,12 @@ export class DashboardMainComponent {
           });
       }
     });
+      this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd)
+      ).subscribe(() => {
+        this.snackBar.dismiss();
+      });
+  
   }
 
   toggleEditView(message?: string): void {
