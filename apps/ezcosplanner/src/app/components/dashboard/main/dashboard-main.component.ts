@@ -12,16 +12,8 @@ import { TimeEntriesStatCardComponent } from './time-entries-stat-card/time-entr
 import { StatCardComponent } from './stat-card/stat-card.component';
 import { MatListModule } from '@angular/material/list';
 import { MatDivider } from '@angular/material/divider';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import {
-  CosplanCategories,
-  CosplanCategory,
-} from '../../../types/cosplan-category';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CosplanCategories, CosplanCategory } from '../../../types/cosplan-category';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatOption } from '@angular/material/core';
@@ -34,11 +26,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SimpleSnackbarImgComponent } from './snackbar/simple-snackbar-img.component';
 import { CosplanApiService } from '../../../services/cosplan-api.service';
 import { CosplanService } from '../../../services/cosplan.service';
-import { CosplanStatus } from '../../../types/cosplan-status';
-import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { CropFileUploadComponent } from '../../file-upload/crop-file-upload/crop-file-upload.component';
 import { DialogService } from '../../../services/dialog.service';
-import { FileUploadComponent } from '../../file-upload/file-upload.component';
+import { AddCosplanDialogComponent } from './add-cosplan-dialog/add-cosplan-dialog.component';
+import { DialogMaxWidth } from '../../../enums/dialog.enum';
+import { first } from 'rxjs';
+import { AddCosplanDialogRes } from './add-cosplan-dialog/add-cosplan.dialog.d';
+import { CosplanForm } from '../../../types/cosplan-form';
 
 @Component({
   standalone: true,
@@ -60,7 +55,7 @@ import { FileUploadComponent } from '../../file-upload/file-upload.component';
     MatIcon,
     MatButtonModule,
     MatTooltipModule,
-    FileUploadComponent,
+    CropFileUploadComponent,
   ],
   templateUrl: './dashboard-main.component.html',
   styleUrl: './dashboard-main.component.scss',
@@ -68,10 +63,9 @@ import { FileUploadComponent } from '../../file-upload/file-upload.component';
 })
 export class DashboardMainComponent {
   private cosplanApiService = inject(CosplanApiService);
-  private dialogService = inject(DialogService);
   private snackBar = inject(MatSnackBar);
-  private router = inject(Router);
   readonly dialog = inject(MatDialog);
+  readonly dialogService = inject(DialogService);
 
   protected cosplan = inject(CosplanService).cosplan;
   protected viewMode = inject(CosplanService).viewMode;
@@ -98,6 +92,25 @@ export class DashboardMainComponent {
       const cosplan = this.cosplan();
       if (cosplan) {
         this.initFormValue(cosplan);
+      } else {
+        this.dialog
+          .open<AddCosplanDialogComponent, never, AddCosplanDialogRes>(
+            AddCosplanDialogComponent,
+            {
+              width: '100%',
+              maxWidth: DialogMaxWidth.md,
+              enterAnimationDuration: 200,
+              exitAnimationDuration: 100,
+              disableClose: true,
+            }
+          )
+          .afterClosed()
+          .pipe(first())
+          .subscribe((res) => {
+            if (res?.status) {
+              this.createCosplan(res.formValue);
+            }
+          });
       }
     });
   }
@@ -132,6 +145,18 @@ export class DashboardMainComponent {
           },
         });
     }
+  }
+
+  createCosplan(formValue: CosplanForm): void {
+    this.cosplanApiService.createCosplan$(formValue).subscribe({
+      next: (createdCosplan) => {
+        this.cosplan.set(createdCosplan);
+        this.toggleEditView();
+      },
+      error: (err) => {
+        console.error(`Error while upading cosplan: ${err}`);
+      },
+    });
   }
 
   private initFormValue(cosplan: Cosplan): void {

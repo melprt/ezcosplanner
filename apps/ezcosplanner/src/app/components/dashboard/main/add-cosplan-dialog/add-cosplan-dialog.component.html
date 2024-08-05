@@ -1,0 +1,31 @@
+<h2 mat-dialog-title class="!mb-6">Création du cosplan</h2>
+<mat-dialog-content>
+  <div [formGroup]="cosplanForm">
+    <mat-form-field class="edit-field w-full" appearance="outline">
+      <mat-label>Nom</mat-label>
+      <input matInput [formControlName]="'name'">
+    </mat-form-field>
+    <mat-form-field class="edit-field w-full" appearance="outline">
+      <mat-label>Fandom</mat-label>
+      <input matInput [formControlName]="'fandom'">
+    </mat-form-field>
+    <mat-form-field class="edit-field w-full" appearance="outline">
+      <mat-label>Catégorie</mat-label>
+      <mat-select #cosplanCategory [formControlName]="'category'">
+        @for (category of cosplanCategories; track $index) {
+          <mat-option [value]="category">{{category}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <input class="hidden" [formControlName]="'fileId'">
+
+    <div class="relative cosplan-img-container">
+      <ezc-crop-file-upload [fileType]="'cosplan'" (fileIdOutput)="setFileId($event)"></ezc-crop-file-upload>
+    </div>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions class="flex gap-4">
+  <button [routerLink]="['/']" (click)="close(false)">Annuler</button>
+  <button (click)="close(true)" mat-button cdkFocusInitial [disabled]="cosplanForm.invalid">Créer le cosplan</button>
+</mat-dialog-actions>

@@ -1,0 +1,5 @@
+@use '../../../styles/card.theme.scss' as card-theme;
+@use '../../../styles/button-icon.scss' as button-icon;
+
+@include card-theme.card-content();
+@include button-icon.button-icon(230px, 243px);

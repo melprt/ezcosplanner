@@ -4,12 +4,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { NgOptimizedImage } from '@angular/common';
-import { Cosplan } from '../../models/cosplan';
+import { Cosplan } from '../../../models/cosplan';
 import { MatDivider } from '@angular/material/divider';
-import { DialogService } from '../../services/dialog.service';
-import { CosplanApiService } from '../../services/cosplan-api.service';
+import { DialogService } from '../../../services/dialog.service';
+import { CosplanApiService } from '../../../services/cosplan-api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SimpleSnackbarImgComponent } from '../dashboard/main/snackbar/simple-snackbar-img.component';
+import { SimpleSnackbarImgComponent } from '../../dashboard/main/snackbar/simple-snackbar-img.component';
 import { RouterLink } from '@angular/router';
 
 @Component({

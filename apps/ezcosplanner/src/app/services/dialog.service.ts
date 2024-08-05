@@ -2,6 +2,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SimpleAlertDialogComponent } from '../components/Dialog/SimpleAlertDialog/simple-alert-dialog.component';
 import { inject, Injectable } from '@angular/core';
 import { first } from 'rxjs';
+import { DialogMaxWidth } from '../enums/dialog.enum';
 
 interface DialogData {
   title: string;
@@ -17,8 +18,9 @@ export class DialogService {
   openAnimatedDialog(
     title: string,
     message: string,
-    callback: (res?: boolean) => void
+    callback: (res?: boolean) => void,
   ): void {
+
     const dialogRef = this.dialog.open<
       SimpleAlertDialogComponent,
       DialogData,
@@ -26,11 +28,13 @@ export class DialogService {
     >(SimpleAlertDialogComponent, {
       data: {
         title,
-        message,
+        message : message,
       },
-      width: '450px',
+      width: '100%',
+      maxWidth: DialogMaxWidth.sm,
       enterAnimationDuration: 200,
       exitAnimationDuration: 100,
+      disableClose: true
     });
 
     dialogRef
@@ -38,4 +42,5 @@ export class DialogService {
       .pipe(first())
       .subscribe((res) => callback(res));
   }
+
 }

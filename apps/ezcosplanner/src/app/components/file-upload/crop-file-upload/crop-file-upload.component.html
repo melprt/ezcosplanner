@@ -1,13 +1,15 @@
 @if (status() === 'viewing') {
-    @if (displayedFile(); as displayedFileId) {
-        <img mat-card-image class="object-contain" [src]="'http://localhost:3000/file/' + displayedFileId + '/stream'"
-            alt="image" fill />
-        <ezc-file-action-buttons (onClickAction)="actionImage($event)" />
+    @if (displayedFile(); as displayedFile) {
+        <div class="relative flex h-full justify-center items-end">
+            <img mat-card-image class="object-contain" [src]="'http://localhost:3000/file/' + displayedFile.id + '/stream'"
+                alt="image" fill />
+            <ezc-file-action-buttons (onClickAction)="actionImage($event)" />
+        </div>
     }
 }
 
-<div class="h-full" [ngClass]="{'border-2 border-dashed': status() === 'uploading'}">
-    <div class="relative flex flex-col justify-center items-center h-full w-full dropzone"
+<div class="h-full *:h-full cropper-container" [ngClass]="{'border-2 border-dashed': status() === 'uploading'}">
+    <div class="relative flex flex-col justify-center items-center w-full dropzone"
         [ngClass]="{hidden: status() !== 'uploading'}">
         <img [ngSrc]="'/assets/cat_photo_secondary_256.png'" alt="cosplan image upload icon" width="75" height="75" />
 
@@ -21,7 +23,7 @@
     </div>
 
     <div [ngClass]="{'hidden': status() !== 'cropping'}">
-        <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="246/342"
+        <image-cropper class="flex items-end justify-center h-full" [imageChangedEvent]="imageChangedEvent" [allowMoveImage]="true" [containWithinAspectRatio]="true" [maintainAspectRatio]="true" [aspectRatio]="246/342"
             format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"></image-cropper>
 
         <div class="absolute bottom-0 right-0">

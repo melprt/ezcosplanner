@@ -1,5 +1,5 @@
-import { Cosplan, PrismaClient } from '@prisma/client';
-import { UpdateCosplanBody, UpdateCosplanStatusBody } from '../schemas/cosplan';
+import { Cosplan, CosplanStatus, PrismaClient } from '@prisma/client';
+import { CreateCosplanBody, UpdateCosplanBody, UpdateCosplanStatusBody } from '../schemas/cosplan';
 
 export async function findAllCosplans(prisma: PrismaClient): Promise<Cosplan[]> {
   return prisma.cosplan.findMany({
@@ -33,6 +33,26 @@ export async function updateCosplan(
       name,
       fandom,
       category,
+    },
+    include: {
+      file: true,
+    }
+  });
+}
+
+export async function createCosplan(
+  prisma: PrismaClient,
+  { name, fandom, category, fileId }: CreateCosplanBody
+): Promise<Cosplan> {
+  //todo create with current user
+  return await prisma.cosplan.create({
+    data: {
+      name,
+      fandom,
+      category,
+      status: CosplanStatus.PENDING,
+      cosmakerId: 1,
+      fileId: fileId,
     },
     include: {
       file: true,

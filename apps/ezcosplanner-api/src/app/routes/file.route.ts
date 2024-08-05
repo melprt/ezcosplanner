@@ -21,8 +21,8 @@ export default async function (fastify: FastifyInstance) {
 
   fastify.delete(
     '/file/:fileId',
-    async (request: FastifyRequest<{ Params: { fileId: number } }>) =>
-      await deleteFile(fastify.prisma, +request.params.fileId)
+    async (request: FastifyRequest<{ Params: { fileId: number }, Body: {path: string} }>) =>
+      await deleteFile(fastify.prisma, +request.params.fileId, request.body.path)
   );
 
   fastify.post(
@@ -41,7 +41,7 @@ export default async function (fastify: FastifyInstance) {
           const file = await saveFile(fastify.prisma, data);
 
           if (file) {
-            reply.send(file.id);
+            reply.send(file);
           } else {
             reply.send();
           }
