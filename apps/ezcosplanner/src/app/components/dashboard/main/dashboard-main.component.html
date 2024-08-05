@@ -1,129 +1,124 @@
 <div [formGroup]="cosplanForm">
     @if (cosplan(); as cosplan) {
-    <div class="grid grid-cols-4 gap-40 mb-40">
-        <div class="flex flex-col gap-18 col-span-3">
-            <div class="relative flex flex-col gap-4 w-fit">
-                <div class="absolute top-0 right-0 cosplan-actions">
-                    @if (!editView()) {
-                        <button (click)="toggleEditView('Ton cosplan est en mode édition')" mat-fab
-                            class="!rounded-full !shadow-inner cosplan-actions__button button-icon" aria-label="button edit cosplan" matTooltip="Modifier les informations">
-                            <mat-icon class="button-icon__icon">edit</mat-icon>
-                        </button>
-                    } @else {
-                        <button (click)="editCosplan()" mat-fab
-                            [disabled]="cosplanForm.invalid"
-                            class="!rounded-full !shadow-inner mr-4 cosplan-actions__button button-icon" aria-label="button validate cosplan edition" matTooltip="Sauvarder les changements">
-                            <mat-icon class="button-icon__icon">check_small
-                            </mat-icon>
-                        </button>
-                        <button (click)="toggleEditView()" mat-fab
-                            class="!rounded-full !shadow-inner cosplan-actions__button button-icon" aria-label="button cancel edit cosplan" matTooltip="Annuler">
-                            <mat-icon class="button-icon__icon">cancel</mat-icon>
-                        </button>
-                    }
-                </div>
-                <div class="w-fit">
-                    <h1 [ngClass]="{'cosplan-editable-info__hidden': editView()}" class="text-5xl">
-                        {{cosplan.name | titlecase }}
-                    </h1>
-                    <mat-form-field [ngClass]="{'edit-field__hidden': !editView()}" class="edit-field" appearance="outline">
-                        <mat-label>Nom</mat-label>
-                        <input matInput [formControlName]="'name'">
-                    </mat-form-field>
-                </div>
-                <div class="flex flex-row flex-wrap gap-4">
-                    <div class="w-fit">
-                        <h2 [ngClass]="{'cosplan-editable-info__hidden': editView()}" class="text-xl">
-                            {{cosplan.fandom | titlecase }}                          
-                        </h2>
-                        <mat-form-field [ngClass]="{'edit-field__hidden': !editView()}" class="edit-field" appearance="outline">
-                            <mat-label>Fandom</mat-label>
-                            <input matInput [formControlName]="'fandom'">
-                        </mat-form-field>
+        <div class="grid grid-cols-4 gap-40 mb-40">
+            <div class="flex flex-col gap-18 col-span-3">
+                <div class="relative flex flex-col gap-4 w-fit">
+                    <div class="absolute top-0 right-0 cosplan-actions">
+                        @if (!editView()) {
+                            <button (click)="toggleEditView('Ton cosplan est en mode édition')" mat-fab
+                                class="!rounded-full !shadow-inner cosplan-actions__button button-icon" aria-label="button edit cosplan" matTooltip="Modifier les informations">
+                                <mat-icon class="button-icon__icon">edit</mat-icon>
+                            </button>
+                        } @else {
+                            <button (click)="editCosplan()" mat-fab
+                                [disabled]="cosplanForm.invalid"
+                                class="!rounded-full !shadow-inner mr-4 cosplan-actions__button button-icon" aria-label="button validate cosplan edition" matTooltip="Sauvarder les changements">
+                                <mat-icon class="button-icon__icon">check_small
+                                </mat-icon>
+                            </button>
+                            <button (click)="toggleEditView()" mat-fab
+                                class="!rounded-full !shadow-inner cosplan-actions__button button-icon" aria-label="button cancel edit cosplan" matTooltip="Annuler">
+                                <mat-icon class="button-icon__icon">cancel</mat-icon>
+                            </button>
+                        }
                     </div>
                     <div class="w-fit">
-                        <h2 [ngClass]="{'cosplan-editable-info__hidden': editView()}" class="cosplan-category">
-                            ({{cosplan.category}})
-                        </h2>
+                        <h1 [ngClass]="{'cosplan-editable-info__hidden': editView()}" class="text-5xl">
+                            {{cosplan.name | titlecase }}
+                        </h1>
                         <mat-form-field [ngClass]="{'edit-field__hidden': !editView()}" class="edit-field" appearance="outline">
-                            <mat-label>Catégorie</mat-label>
-                            <mat-select #cosplanCategory [formControlName]="'category'">
-                                @for (category of cosplanCategories; track $index) {
-                                <mat-option [value]="category">{{category}}</mat-option>
-                                }
-                            </mat-select>
+                            <mat-label>Nom</mat-label>
+                            <input matInput [formControlName]="'name'">
                         </mat-form-field>
                     </div>
+                    <div class="flex flex-row flex-wrap gap-4">
+                        <div class="w-fit">
+                            <h2 [ngClass]="{'cosplan-editable-info__hidden': editView()}" class="text-xl">
+                                {{cosplan.fandom | titlecase }}                          
+                            </h2>
+                            <mat-form-field [ngClass]="{'edit-field__hidden': !editView()}" class="edit-field" appearance="outline">
+                                <mat-label>Fandom</mat-label>
+                                <input matInput [formControlName]="'fandom'">
+                            </mat-form-field>
+                        </div>
+                        <div class="w-fit">
+                            <h2 [ngClass]="{'cosplan-editable-info__hidden': editView()}" class="cosplan-category">
+                                ({{cosplan.category}})
+                            </h2>
+                            <mat-form-field [ngClass]="{'edit-field__hidden': !editView()}" class="edit-field" appearance="outline">
+                                <mat-label>Catégorie</mat-label>
+                                <mat-select #cosplanCategory [formControlName]="'category'">
+                                    @for (category of cosplanCategories; track $index) {
+                                    <mat-option [value]="category">{{category}}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-row flex-wrap justify-between cosplan-indicators mt-20">
+                    <ezc-progress-circle [progress]="100" [label]="'Temps Passé'" [content]="'15h'"
+                        [additionalContent]="'12min'" />
+                    <ezc-progress-circle [progress]="100" [label]="'Budget Total'" [content]="'1000€'" />
+                    <ezc-progress-circle [progress]="100" [label]="'Progression'" [content]="'100%'" />
                 </div>
             </div>
-            <div class="flex flex-row flex-wrap justify-between cosplan-indicators mt-20">
-                <ezc-progress-circle [progress]="100" [label]="'Temps Passé'" [content]="'15h'"
-                    [additionalContent]="'12min'" />
-                <ezc-progress-circle [progress]="100" [label]="'Budget Total'" [content]="'1000€'" />
-                <ezc-progress-circle [progress]="100" [label]="'Progression'" [content]="'100%'" />
+            <div class="flex flex-col col-span-1">
+                <div class="relative flex flex-col items-center justify-center cosplan-img-container">
+                    <ezc-crop-file-upload [existingFile]="cosplan.file" [fileType]="'cosplan'" [entityId]="cosplan.id"></ezc-crop-file-upload>
+                </div>
             </div>
         </div>
-        <div class="flex flex-col col-span-1">
-            <div class="relative flex flex-col items-center justify-center cosplan-img-container">
-                <ezc-crop-file-upload [existingFile]="cosplan.file" [fileType]="'cosplan'" [entityId]="cosplan.id"></ezc-crop-file-upload>
+        <div class="grid grid-cols-3 gap-20 mb-40">
+            <div class="flex flex-col">
+                <h2 class="text-3xl">Dernières photos de WIP</h2>
+                <!-- TODO carousel image wip -->
+            </div>
+            <div class="flex flex-col justify-between gap-y-9">
+                <ezc-time-entries-stat-card [title]="'2h passées'" [subtitle]="'ce mois'" />
+                <ezc-time-entries-stat-card [title]="'2h passées sur'" [subtitle]="'part name'" />
+            </div>
+            <div class="flex flex-row justify-between gap-x-9">
+                <ezc-stat-card [stat]="15" [label]="'matériaux différents utilisés'"
+                    [img]="'/assets/cat_heart_secondary_256.png'" />
+                <ezc-stat-card [stat]="15" [label]="'photos de WIP'" [img]="'/assets/cat_star_secondary_256.png'" />
             </div>
         </div>
-    </div>
-    <div class="grid grid-cols-3 gap-20 mb-40">
-        <div class="flex flex-col">
-            <h2 class="text-3xl">Dernières photos de WIP</h2>
-            <!-- TODO carousel image wip -->
-        </div>
-        <div class="flex flex-col justify-between gap-y-9">
-            <ezc-time-entries-stat-card [title]="'2h passées'" [subtitle]="'ce mois'" />
-            <ezc-time-entries-stat-card [title]="'2h passées sur'" [subtitle]="'part name'" />
-        </div>
-        <div class="flex flex-row justify-between gap-x-9">
-            <ezc-stat-card [stat]="15" [label]="'matériaux différents utilisés'"
-                [img]="'/assets/cat_heart_secondary_256.png'" />
-            <ezc-stat-card [stat]="15" [label]="'photos de WIP'" [img]="'/assets/cat_star_secondary_256.png'" />
-        </div>
-    </div>
-    <div class="grid grid-cols-2 gap-80 mb-40">
-        <div>
-            <ng-container *ngTemplateOutlet="dashboardTitle, context: {title: 'Dernières tâches accomplies'}" />
-            <mat-list>
-                <div mat-subheader class="text-xl">Part name</div>
-                <mat-list-item>
-                    <div matListItemTitle>Task name</div>
-                    <div matListItemLine>date checked</div>
-                </mat-list-item>
-                <mat-divider></mat-divider>
-                <div mat-subheader class="text-xl">Part name</div>
-                <mat-list-item>
-                    <div matListItemTitle>Task name</div>
-                    <div matListItemLine>date checked</div>
-                </mat-list-item>
-            </mat-list>
-        </div>
-        <div>
-            @if (cosplan.deadline) {
-            <ng-container *ngTemplateOutlet="dashboardTitle, context: {title: 'Temps restant avant la deadline'}" />
-            <span class="text-lg">11J 12H</span>
-            } @else {
-            <ng-container *ngTemplateOutlet="dashboardTitle, context: {title: 'Pas de deadline pour ce cosplan'}" />
-            }
+        <div class="grid grid-cols-2 gap-80 mb-40">
+            <div>
+                <ng-container *ngTemplateOutlet="dashboardTitle, context: {title: 'Dernières tâches accomplies'}" />
+                <mat-list>
+                    <div mat-subheader class="text-xl">Part name</div>
+                    <mat-list-item>
+                        <div matListItemTitle>Task name</div>
+                        <div matListItemLine>date checked</div>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <div mat-subheader class="text-xl">Part name</div>
+                    <mat-list-item>
+                        <div matListItemTitle>Task name</div>
+                        <div matListItemLine>date checked</div>
+                    </mat-list-item>
+                </mat-list>
+            </div>
+            <div>
+                @if (cosplan.deadline) {
+                <ng-container *ngTemplateOutlet="dashboardTitle, context: {title: 'Temps restant avant la deadline'}" />
+                <span class="text-lg">11J 12H</span>
+                } @else {
+                <ng-container *ngTemplateOutlet="dashboardTitle, context: {title: 'Pas de deadline pour ce cosplan'}" />
+                }
+
+            </div>
 
         </div>
 
-    </div>
-
-    <ng-template #dashboardTitle let-title="title">
-        <div class="flex flex-row flex-wrap gap-4 items-center dashboard-title mb-8">
-            <h2 class="text-3xl m-0">{{title}}</h2>
-            <img class="mb-auto" [ngSrc]="'/assets/cat_heart_icon_primary.png'" alt="cat heart icon" width="36"
-                height="36" />
-        </div>
-    </ng-template>
-
-
-    } @else {
-    <!-- todo add cosplan -->
+        <ng-template #dashboardTitle let-title="title">
+            <div class="flex flex-row flex-wrap gap-4 items-center dashboard-title mb-8">
+                <h2 class="text-3xl m-0">{{title}}</h2>
+                <img class="mb-auto" [ngSrc]="'/assets/cat_heart_icon_primary.png'" alt="cat heart icon" width="36"
+                    height="36" />
+            </div>
+        </ng-template>
     }
-
 </div>
