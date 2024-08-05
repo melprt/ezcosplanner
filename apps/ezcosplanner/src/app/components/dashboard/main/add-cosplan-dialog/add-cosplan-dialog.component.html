@@ -1,15 +1,21 @@
 <h2 mat-dialog-title class="!mb-6">Création du cosplan</h2>
 <mat-dialog-content>
   <div [formGroup]="cosplanForm">
-    <mat-form-field class="edit-field w-full" appearance="outline">
+    <mat-form-field class="mb-3 w-full edit-field" appearance="outline">
       <mat-label>Nom</mat-label>
       <input matInput [formControlName]="'name'">
+      @if (cosplanForm.get('name')?.hasError('required')) {
+        <mat-error>Tu dois remplir ce champs stp :3</mat-error>
+      }
     </mat-form-field>
-    <mat-form-field class="edit-field w-full" appearance="outline">
+    <mat-form-field class="mb-3 w-full edit-field" appearance="outline">
       <mat-label>Fandom</mat-label>
       <input matInput [formControlName]="'fandom'">
+      @if (cosplanForm.get('fandom')?.hasError('required')) {
+        <mat-error>Tu dois remplir ce champs stp :3</mat-error>
+      }
     </mat-form-field>
-    <mat-form-field class="edit-field w-full" appearance="outline">
+    <mat-form-field class="mb-3 w-full edit-field" appearance="outline">
       <mat-label>Catégorie</mat-label>
       <mat-select #cosplanCategory [formControlName]="'category'">
         @for (category of cosplanCategories; track $index) {
@@ -27,5 +33,9 @@
 </mat-dialog-content>
 <mat-dialog-actions class="flex gap-4">
   <button [routerLink]="['/']" (click)="close(false)">Annuler</button>
-  <button (click)="close(true)" mat-button cdkFocusInitial [disabled]="cosplanForm.invalid">Créer le cosplan</button>
+  
+  <div matTooltip="Rempli tous les champs stp :3" [matTooltipDisabled]="!cosplanForm.invalid">
+    <button (click)="close(true)" mat-button cdkFocusInitial [disabled]="cosplanForm.invalid">Créer le cosplan</button>
+  </div>
+
 </mat-dialog-actions>

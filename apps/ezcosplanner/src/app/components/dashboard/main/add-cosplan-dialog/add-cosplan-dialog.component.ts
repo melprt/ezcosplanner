@@ -22,6 +22,7 @@ import { RouterLink } from '@angular/router';
 import { AddCosplanDialogRes } from './add-cosplan.dialog.d';
 import { InferedFormGroup } from '../../../../utils/form.utils';
 import { CosplanForm } from '../../../../types/cosplan-form';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @Component({
@@ -41,7 +42,8 @@ import { CosplanForm } from '../../../../types/cosplan-form';
     MatOption,
     CropFileUploadComponent,
     MatButtonModule,
-    RouterLink
+    RouterLink,
+    MatTooltipModule
   ],
   templateUrl: './add-cosplan-dialog.component.html',
   styleUrl: './add-cosplan-dialog.component.scss',
