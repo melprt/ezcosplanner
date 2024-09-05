@@ -1,0 +1,14 @@
+<mat-card class="cosplan-part-card flex flex-col justify-center items-center" appearance="outlined">
+  {{part.name}}
+  <mat-card-actions [align]="'end'" class="flex flex-col gap-4">
+    <button [routerLink]="['./', part.id]" mat-icon-button class="button-icon">
+      <mat-icon class="button-icon__icon button-icon__icon--edit" aria-hidden="false" aria-label="Edit cosplan icon"
+        fontIcon="edit"></mat-icon>
+    </button>
+    
+    <button (click)="toggleAlertDialog()" mat-icon-button class="button-icon">
+      <mat-icon class="button-icon__icon button-icon__icon--edit" aria-hidden="false" aria-label="delete cosplan icon"
+        fontIcon="delete"></mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

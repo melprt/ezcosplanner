@@ -1,4 +1,4 @@
-import { CosplanForm } from '../../../../services/cosplan.service';
+import { CosplanForm } from '../../../../types/cosplan-form';
 
 export type AddCosplanDialogRes =
   | {

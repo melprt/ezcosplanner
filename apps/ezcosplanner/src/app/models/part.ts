@@ -12,3 +12,9 @@ export interface Part {
     TimeEntries?: TimeEntry[];
     materials?: Material[];
 }
+
+
+export interface CreatePartData {
+    name: string;
+    cosplanId: number;
+}

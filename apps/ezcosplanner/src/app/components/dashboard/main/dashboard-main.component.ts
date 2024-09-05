@@ -34,7 +34,7 @@ import { DialogMaxWidth } from '../../../enums/dialog.enum';
 import { filter, first } from 'rxjs';
 import { AddCosplanDialogRes } from './add-cosplan-dialog/add-cosplan.dialog.d';
 import { CosplanForm } from '../../../types/cosplan-form';
-import { NavigationEnd, Router, RouterEvent } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   standalone: true,

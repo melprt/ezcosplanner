@@ -6,11 +6,27 @@
                 fontIcon="arrow_back"></mat-icon>
         </button>
         <div class="flex flex-col h-full justify-center items-center gap-9">
-            <ng-container *ngTemplateOutlet="iconButton, context: {icon: 'dashboard'}" />
-            <ng-container *ngTemplateOutlet="iconButton, context: {icon: 'checklist'}" />
-            <ng-container *ngTemplateOutlet="iconButton, context: {icon: 'construction'}" />
-            <ng-container *ngTemplateOutlet="iconButton, context: {icon: 'receipt_long'}" />
-            <ng-container *ngTemplateOutlet="iconButton, context: {icon: 'more_time'}" />
+            <button [routerLink]="['/dashboard', cosplan()?.id ?? null]" routerLinkActive="active-link"
+                [routerLinkActiveOptions]="{ exact: true}" mat-icon-button class="button-icon button-primary"
+                [matTooltip]="'Tableau de bord'">
+                <mat-icon class="button-icon__icon" aria-hidden="false" [fontIcon]="'dashboard'"></mat-icon>
+            </button>
+            <button [routerLink]="['part']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true}"
+                mat-icon-button class="button-icon button-primary" [matTooltip]="'Éléments'">
+                <mat-icon class="button-icon__icon" aria-hidden="false" [fontIcon]="'checklist'"></mat-icon>
+            </button>
+            <!-- <button [routerLink]="['part']" routerLinkActive="active-link" mat-icon-button
+                class="button-icon button-primary" [matTooltip]="'Matériaux'">
+                <mat-icon class="button-icon__icon" aria-hidden="false" [fontIcon]="'construction'"></mat-icon>
+            </button>
+            <button [routerLink]="['part']" routerLinkActive="active-link" mat-icon-button
+                class="button-icon button-primary" [matTooltip]="'Références'">
+                <mat-icon class="button-icon__icon" aria-hidden="false" [fontIcon]="'receipt_long'"></mat-icon>
+            </button>
+            <button [routerLink]="['part']" routerLinkActive="active-link" mat-icon-button
+                class="button-icon button-primary" [matTooltip]="'Temps passé'">
+                <mat-icon class="button-icon__icon" aria-hidden="false" [fontIcon]="'more_time'"></mat-icon>
+            </button> -->
         </div>
     </mat-sidenav>
 
@@ -18,9 +34,3 @@
         <ng-content />
     </mat-sidenav-content>
 </mat-sidenav-container>
-
-<ng-template #iconButton let-icon="icon">
-    <button mat-icon-button class="button-icon button-primary">
-        <mat-icon class="button-icon__icon" aria-hidden="false" [fontIcon]="icon"></mat-icon>
-    </button>
-</ng-template>

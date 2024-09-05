@@ -12,6 +12,10 @@
   ::ng-deep .mat-mdc-button-persistent-ripple.mdc-fab__ripple {
     border-radius: 100%;
   }
+
+  &.right-plus {
+    right: -100px;
+  }
 }
 
 .cosplan-indicators {

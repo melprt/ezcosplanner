@@ -30,7 +30,7 @@ import { RouterLink } from '@angular/router';
 })
 export class CosplanCardComponent {
   @Input({ required: true }) cosplan!: Cosplan;
-  onDelete = output<void>() 
+  onDelete = output<void>(); 
 
   private dialogService = inject(DialogService);
   private cosplanApiService = inject(CosplanApiService);

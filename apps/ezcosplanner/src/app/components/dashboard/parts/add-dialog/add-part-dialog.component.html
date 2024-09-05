@@ -1,0 +1,18 @@
+<h2 mat-dialog-title class="!mb-6">Donne un nom à ton élément</h2>
+<mat-dialog-content>
+  <div [formGroup]="partForm" (keydown.enter)="close(true)">
+    <mat-form-field class="mb-3 w-full edit-field" appearance="outline">
+      <mat-label>Nom</mat-label>
+      <input matInput [formControlName]="'name'">
+      @if (partForm.get('name')?.hasError('required')) {
+        <mat-error>Tu dois remplir ce champs stp :3</mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions class="flex gap-4">
+    <button (click)="close(false)">Annuler</button>
+    <button (click)="close(true)" mat-button cdkFocusInitial [disabled]="partForm.invalid">Valider</button>
+
+</mat-dialog-actions>

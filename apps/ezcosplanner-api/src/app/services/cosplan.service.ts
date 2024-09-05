@@ -16,6 +16,7 @@ export async function findCosplanById(prisma: PrismaClient, id: number): Promise
     },
     include: {
       file: true,
+      parts: true
     }
   });
 }
@@ -36,6 +37,7 @@ export async function updateCosplan(
     },
     include: {
       file: true,
+      parts: true
     }
   });
 }
