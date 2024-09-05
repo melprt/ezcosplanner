@@ -50,6 +50,8 @@ model Part {
   materials   Material[]
   cosplan     Cosplan      @relation(fields: [cosplanId], references: [id], onDelete: Cascade)
   cosplanId   Int
+  timeEntry   TimeEntry?   @relation(fields: [timeEntryId], references: [id])
+  timeEntryId Int?
 }
 
 model Reference {
@@ -65,16 +67,8 @@ model TimeEntry {
   id              Int              @id @default(autoincrement())
   day             DateTime
   time            BigInt
-  timeEntryObject TimeEntryObject?
-}
-
-// timeEntry is liked with part or task
-model TimeEntryObject {
-  id          Int        @id @default(autoincrement())
-  objectId    Int
-  type        String
-  timeEntry   TimeEntry? @relation(fields: [timeEntryId], references: [id])
-  timeEntryId Int        @unique
+  task            Task[]
+  part            Part[]
 }
 
 model WipPicture {
@@ -100,13 +94,15 @@ model Material {
 }
 
 model Task {
-  id          Int      @id @default(autoincrement())
-  updatedAt   DateTime @updatedAt
-  name        String   @db.VarChar(255)
-  completed   Boolean  @default(false)
-  description String?  @db.VarChar(255)
-  part        Part     @relation(fields: [partId], references: [id], onDelete: Cascade)
-  partId      Int
+  id            Int      @id @default(autoincrement())
+  updatedAt     DateTime @updatedAt
+  name          String   @db.VarChar(255)
+  completed     Boolean  @default(false)
+  description   String?  @db.VarChar(255)
+  part          Part     @relation(fields: [partId], references: [id], onDelete: Cascade)
+  partId        Int
+  timeEntry     TimeEntry? @relation(fields: [timeEntryId], references: [id])
+  timeEntryId   Int?
 }
 
 model UploadedFile {

@@ -1,7 +1,12 @@
 import { FastifyInstance, FastifyRequest } from "fastify";
-import { deletePart } from "../services/part.service";
+import { deleteTimeEntry } from "../services/time-entry.service";
 
 export default async function (fastify: FastifyInstance) {
+  // fastify.get(
+  //   '/timeentry',
+  //   async () => ({timeentries: await findAllTimeEntryForCosplan(fastify.prisma)})
+  // );
+
     fastify.delete(
       '/timeentry/:id',
       async (request: FastifyRequest<{ Params: { id: number } }>) =>
