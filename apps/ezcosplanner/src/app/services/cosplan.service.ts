@@ -20,7 +20,7 @@ export class CosplanService {
 
   private cosplanApiService = inject(CosplanApiService);
 
-  loadCosplan$(cosplanId: number): Observable<Cosplan | null> {
+  loadCosplan$(cosplanId: number | undefined): Observable<Cosplan | null> {
     if (cosplanId) {
       return this.cosplanApiService.getCosplanbyId$(+cosplanId).pipe(
         catchError((err) => {
@@ -35,6 +35,10 @@ export class CosplanService {
     }
     this.cosplan.set(null);
     return of(null);
+  }
+
+  refreshCosplan$(): Observable<Cosplan | null> {
+    return this.loadCosplan$(this.cosplan()?.id)
   }
 
   getCosplanForm(): FormGroup<InferedFormGroup<CosplanForm>> {

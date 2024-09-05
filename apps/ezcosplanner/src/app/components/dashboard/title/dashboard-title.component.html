@@ -1,0 +1,20 @@
+<div class="relative flex flex-col gap-4 w-fit dashboard-title mb-20">
+    <div class="flex flex-row flex-wrap">
+        <h1 class="text-5xl">
+            {{ cosplan.name | titlecase }}
+        </h1>
+        <div class="flex flex-row flex-wrap items-end justify-end">
+            <img class="mx-9" [ngSrc]="'/assets/cat_heart_icon_primary.png'" alt="cat heart icon" width="22"
+                height="22" />
+            <h3 class="text-4xl leading-6 dashboard-title__subtitle">{{ subtitle|titlecase }}</h3>
+        </div>
+    </div>
+    <div class="flex items-center gap-4">
+        <h2 class="text-xl">
+            {{ cosplan.fandom | titlecase }}
+        </h2>
+        <h2 class="cosplan-category">
+            ({{ cosplan.category }})
+        </h2>
+    </div>
+</div>
