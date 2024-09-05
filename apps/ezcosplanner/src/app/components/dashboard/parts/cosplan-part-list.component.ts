@@ -4,7 +4,6 @@ import { CosplanService } from '../../../services/cosplan.service';
 import { DashboardTitleComponent } from '../title/dashboard-title.component';
 import { AddPartCardComponent } from './add-card/add-part-card.component';
 import { PartCardComponent } from './card/part-card.component';
-import { first, pipe, switchMap } from 'rxjs';
 import { Cosplan } from '../../../models/cosplan';
 
 @Component({
@@ -16,8 +15,8 @@ import { Cosplan } from '../../../models/cosplan';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CosplanPartListComponent {
-  private cosplanService = inject(CosplanService);
   cosplan = signal<Cosplan | null | undefined>(undefined);
+  private cosplanService = inject(CosplanService);
 
   constructor() {
       this.cosplanService.refreshCosplan$()

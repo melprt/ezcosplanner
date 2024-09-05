@@ -43,15 +43,14 @@ import { MatButtonModule } from '@angular/material/button';
 export class AddPartDialogComponent {
   cosplanService = inject(CosplanService);
   data = inject(MAT_DIALOG_DATA);
-  private dialogRef: MatDialogRef<AddPartDialogComponent, AddPartDialogRes> =
-    inject(MatDialogRef);
-
   partForm = new FormGroup({
     name: new FormControl<string>('', {
       validators: Validators.required,
       nonNullable: true,
     }),
   });
+  private dialogRef: MatDialogRef<AddPartDialogComponent, AddPartDialogRes> =
+    inject(MatDialogRef);
 
   close(status: boolean, event = null) {
     if (status || event) {

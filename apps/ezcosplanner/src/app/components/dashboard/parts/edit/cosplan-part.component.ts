@@ -1,12 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
+  computed,
   inject,
-  Input,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Part } from '../../../../models/part';
 import { CosplanService } from '../../../../services/cosplan.service';
 import { ActivatedRoute } from '@angular/router';
 import { DashboardTitleComponent } from '../../title/dashboard-title.component';
@@ -25,16 +23,8 @@ export class CosplanPartComponent {
   protected cosplan = this.cosplanService.cosplan;
   // Safe cast as access to this component is protected by guard that warranty existence of this id
   protected partId: string = this.route.snapshot.paramMap.get('id') as string;
-  protected part;
 
-  ngOnInit(): void {
-    console.log(this.cosplanService.cosplan())
-  }
-
-  constructor() {
-    const cosplan = this.cosplan();
-    console.log(cosplan?.parts)
-    console.log(this.partId)
-    this.part = cosplan?.parts?.find(p => p.id === +this.partId);
-  }
+  part = computed(
+    () => this.cosplan()?.parts?.find(p => p.id === +this.partId)
+  );
 }

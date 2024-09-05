@@ -24,9 +24,6 @@ export class PartCardComponent {
   private snackBar = inject(MatSnackBar);
   @Input({'required': true}) part!: Part;
 
-  onDelete = output<void>(); 
-
-
   toggleAlertDialog(): void {
     this.dialogService.openAnimatedDialog(
       'Suppression élément cosplan',
@@ -40,7 +37,6 @@ export class PartCardComponent {
     if (currentPartId) {
       this.partApiService.deletePart$(currentPartId).subscribe({
         next: () => {
-          this.onDelete.emit();
           this.snackBar.openFromComponent(SimpleSnackbarImgComponent, {
             data: {
               snackbarLabel: 'Ton élément a bien été supprimé',

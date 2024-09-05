@@ -52,10 +52,6 @@ export const appRoutes: Route[] = [
           }
         ]
       },
-      {
-        path: 'timeentry',
-        title: 'Temps passé',
-      },
     ],
   },
 ];

@@ -2,7 +2,7 @@
     <ezc-dashboard-title [cosplan]="cosplan" [subtitle]= "'mewmew'"></ezc-dashboard-title>
 }
 
-@if (part) {
+@if (part(); as part) {
     {{part.id}}
     {{part.name}}
 }

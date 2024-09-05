@@ -14,10 +14,7 @@ export const body = {
 } as const;
 
 export const CreatePartSchema = {
-  body,
-  params: {
-    type: 'object',
-  }
+  body
 } as const;
 
 export type createPartBody = FromSchema<typeof body>;
