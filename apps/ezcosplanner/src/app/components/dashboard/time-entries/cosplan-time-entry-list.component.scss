@@ -1,5 +1,69 @@
+@use '../../../styles/button-icon.scss' as button-icon;
+
+@include button-icon.button-icon(30px, 66px);
+
 table {
     width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+
+    th {
+        border: none;
+        text-align: center;
+        font-size: larger;
+
+        &:not(:first-child) {
+            font-weight: 600;
+        }
+    }
+
+    
+    .mat-mdc-row {
+        height: 80px;
+        
+        & td:not(:first-child) {
+            border-top: 1px solid rgba(160, 96, 112, 0.5);
+            border-bottom: 1px solid rgba(160, 96, 112, 0.5);
+        }
+
+        & td:nth-child(2) {
+            border-left: 1px solid rgba(160, 96, 112, 0.5);
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+        }
+
+        & td:last-child {
+            font-style: oblique;
+            border-right: 1px solid rgba(160, 96, 112, 0.5);
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+        }
+
+        .mat-mdc-cell {
+            text-align: center;
+            border: none;
+        }
+    }
+
+
+    .mat-mdc-footer-row {
+        height: 60px;
+
+        & td:not(:first-child) {
+            font-weight: 600;
+            background-color: theme('colors.secondary');
+            color: theme('colors.primary-light');
+
+        }
+
+        & td:last-child {
+            text-align: center;
+        }
+    }
+
+    td:not(:first-child), th:not(:first-child) {
+        width: 25%;
+    }
 }
 
 .mat-mdc-form-field {
@@ -7,6 +71,3 @@ table {
     width: 100%;
 }
 
-td, th {
-    width: 25%;
-}

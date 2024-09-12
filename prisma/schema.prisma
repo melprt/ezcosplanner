@@ -50,8 +50,7 @@ model Part {
   materials   Material[]
   cosplan     Cosplan      @relation(fields: [cosplanId], references: [id], onDelete: Cascade)
   cosplanId   Int
-  timeEntry   TimeEntry?   @relation(fields: [timeEntryId], references: [id])
-  timeEntryId Int?
+  timeEntry   TimeEntry[]
 }
 
 model Reference {
@@ -64,11 +63,13 @@ model Reference {
 }
 
 model TimeEntry {
-  id              Int              @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   day             DateTime
-  time            BigInt
-  task            Task[]
-  part            Part[]
+  time            Int
+  task            Task? @relation(fields: [taskId], references: [id])
+  taskId          Int?
+  part            Part? @relation(fields: [partId], references: [id])
+  partId          Int?
 }
 
 model WipPicture {
@@ -101,8 +102,7 @@ model Task {
   description   String?  @db.VarChar(255)
   part          Part     @relation(fields: [partId], references: [id], onDelete: Cascade)
   partId        Int
-  timeEntry     TimeEntry? @relation(fields: [timeEntryId], references: [id])
-  timeEntryId   Int?
+  timeEntry     TimeEntry[]
 }
 
 model UploadedFile {

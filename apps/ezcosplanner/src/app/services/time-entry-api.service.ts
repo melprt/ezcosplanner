@@ -1,28 +1,42 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, first, switchMap } from 'rxjs';
+import { Observable, first, map, switchMap } from 'rxjs';
 import { CosplanService } from './cosplan.service';
 import { Cosplan } from '../models/cosplan';
+import { TimeEntry } from '../models/time-entry';
 
 @Injectable()
-export class PartApiService {
+export class TimeEntryApiService {
   private http = inject(HttpClient);
   private apiBaseUrl = 'http://localhost:3000';
-  private baseCosplanUrl = `${this.apiBaseUrl}/timeentry`;
+  private baseTimeEntryUrl = `${this.apiBaseUrl}/timeentry`;
   private cosplanService = inject(CosplanService);
 
+  getAllByCosplan$(cosplanId: number): Observable<TimeEntry[]> {
+    return this.http
+      .get<TimeEntry[]>(`${this.baseTimeEntryUrl}/${cosplanId}`)
+      .pipe(map((res) => res));
+  }
+
   /**
-   * Delete a time entry based on her given id
+   * Delete a time entry based on given list of ids
    * Also retrive updated cosplan and update it in CosplanService
    *
    * @see CosplanService
-   * @param id of timeEntry to delete
+   * @param ids ids of timeEntry to delete
    * @returns Updated cosplan related to deleted timeEntry
    */
-  deletePart$(id: number): Observable<Cosplan | null> {
-    return this.http.delete<void>(`${this.baseCosplanUrl}/${id}`).pipe(
-      switchMap(() => this.cosplanService.refreshCosplan$()),
-      first()
-    );
+  deleteTimeEntries$(
+    ids: number[]
+  ): Observable<Cosplan | null> {
+
+    return this.http
+      .delete<void>(`${this.baseTimeEntryUrl}`, {
+        body: {'ids' : ids}
+      })
+      .pipe(
+        switchMap(() => this.cosplanService.refreshCosplan$()),
+        first()
+      );
   }
 }

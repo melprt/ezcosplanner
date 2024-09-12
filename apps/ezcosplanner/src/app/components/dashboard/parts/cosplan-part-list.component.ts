@@ -15,11 +15,6 @@ import { Cosplan } from '../../../models/cosplan';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CosplanPartListComponent {
-  cosplan = signal<Cosplan | null | undefined>(undefined);
   private cosplanService = inject(CosplanService);
-
-  constructor() {
-      this.cosplanService.refreshCosplan$()
-      this.cosplan = this.cosplanService.cosplan;
-  }
+  cosplan = this.cosplanService.cosplan;
 }
