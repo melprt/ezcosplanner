@@ -13,10 +13,10 @@
       </mat-form-field>
     </div>
   
-    <table mat-table [dataSource]="dataSource" class="!shadow-none mb-10">
+    <table mat-table [dataSource]="dataSource" class="!shadow-none mb-10" matSort>
       <!-- Checkbox Column -->
       <ng-container matColumnDef="select">
-        <th mat-header-cell *matHeaderCellDef>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
           <mat-checkbox (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
             [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
           </mat-checkbox>
@@ -30,7 +30,7 @@
       </ng-container>
   
       <ng-container matColumnDef="day">
-        <th mat-header-cell *matHeaderCellDef> Jour </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Jour </th>
         <td mat-cell *matCellDef="let element"> {{element.day | date:'dd/MM/yyyy'}} </td>
         <td mat-footer-cell *matFooterCellDef>Total</td>
       </ng-container>
@@ -54,7 +54,7 @@
       </ng-container>
   
       <ng-container matColumnDef="time">
-        <th mat-header-cell *matHeaderCellDef> Temps passé </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Temps passé </th>
         <td mat-cell *matCellDef="let element">{{ element.time | time }}</td>
         <td mat-footer-cell *matFooterCellDef>
           {{ getTotalTime() || 0 | time }}
