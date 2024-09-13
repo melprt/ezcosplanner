@@ -6,15 +6,33 @@ export const body = {
   properties: {
     ids: {
       type: 'array',
-      items : {
-        type: 'number'
-      }
+      items: {
+        type: 'number',
+      },
     },
-  }
+  },
 } as const;
 
-export const DeleteTimeEntrySchema = {
-  body
+export const deleteTimeEntrySchema = {
+  body,
+} as const;
+
+export const getTimeEntrySchema = {
+  querystring: {
+    type: 'object',
+    properties: {
+      offset: { type: 'number' },
+      limit: { type: 'number' }
+    },
+    required: ['offset', 'limit']
+  },
+  params: {
+    type: 'object',
+    properties: {
+      cosplanId: { type: 'number' },
+    },
+    required: ['cosplanId'],
+  },
 } as const;
 
 export type deleteTimeEntryBody = FromSchema<typeof body>;

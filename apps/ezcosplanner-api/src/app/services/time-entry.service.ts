@@ -4,59 +4,98 @@ import { deleteTimeEntryBody } from '../schemas/time-entry';
 
 export async function findAllTimeEntryForCosplan(
   prisma: PrismaClient,
-  cosplanId: number
+  cosplanId: number,
+  skip: number,
+  take: number
 ): Promise<TimeEntryResult[]> {
+  const select = {
+    id: true,
+    day: true,
+    time: true,
+    part: {
+      select: {
+        id: true,
+        name: true,
+      },
+    },
+    task: {
+      select: {
+        id: true,
+        name: true,
+        part: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    },
+  };
+
+  const where = {
+    OR: [
+      {
+        part: {
+          cosplanId,
+        },
+      },
+      {
+        task: {
+          part: {
+            cosplanId,
+          },
+        },
+      },
+    ],
+  };
+
   const orderBy: Prisma.TimeEntryOrderByWithRelationInput[] = [
     {
       day: 'desc',
     },
   ];
-  
+
   const timeEntryQueryResult = await prisma.timeEntry.findMany({
     distinct: 'id',
-    select: {
-      id: true,
-      day: true,
-      time: true,
-      part: {
-        select: {
-          id: true,
-          name: true,
-        },
+    select,
+    where,
+    orderBy,
+    skip,
+    take,
+  });
+
+  return timeEntryQueryResult;
+}
+
+export async function getTotalTimeEntryForCosplan(
+  prisma: PrismaClient,
+  cosplanId: number
+): Promise<number> {
+  const count = (
+    await prisma.timeEntry.aggregate({
+      _count: {
+        _all: true,
       },
-      task: {
-        select: {
-          id: true,
-          name: true,
-          part: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-        },
-      },
-    },
-    where: {
-      OR: [
-        {
-          part: {
-            cosplanId,
-          },
-        },
-        {
-          task: {
+      where: {
+        OR: [
+          {
             part: {
               cosplanId,
             },
           },
-        },
-      ],
-    },
-    orderBy
-  });
+          {
+            task: {
+              part: {
+                cosplanId,
+              },
+            },
+          },
+        ],
+      },
+    })
+  )._count._all;
 
-  return timeEntryQueryResult;
+  return count;
 }
 
 export async function deleteTimeEntry(
@@ -69,7 +108,6 @@ export async function deleteTimeEntry(
     },
   });
 }
-
 
 export async function deleteTimeEntries(
   prisma: PrismaClient,

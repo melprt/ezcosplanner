@@ -5,6 +5,7 @@ import {
   ViewChild,
   inject,
   signal,
+  effect,
 } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,6 +14,7 @@ import {
   MatPaginator,
   MatPaginatorModule,
   MatPaginatorIntl,
+  PageEvent,
 } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -52,6 +54,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class CosplanTimeEntryListComponent implements AfterViewInit {
   timeEntries = signal<TimeEntry[] | null>(null);
   loading = signal<boolean>(true);
+  timeEntryCount = signal<number>(0);
   dataSource = new MatTableDataSource<TimeEntry>();
   selection = new SelectionModel<TimeEntry>(true, []);
   displayedColumns: string[] = ['select', 'day', 'part', 'task', 'time'];
@@ -60,25 +63,38 @@ export class CosplanTimeEntryListComponent implements AfterViewInit {
   private timeEntryApiService = inject(TimeEntryApiService);
   private cosplanService = inject(CosplanService);
   private cosplan = this.cosplanService.cosplan;
-
+  private offset = 0;
+  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  private pageSize = 0;
+
+  onPaginateChange(event: PageEvent) {
+    //if page size has changed go to first page
+    if (this.pageSize !== event.pageSize) {
+      this.pageSize = event.pageSize;
+      this.paginator.firstPage();
+    }
+    this.offset = this.paginator.pageSize * this.paginator.pageIndex;
+    this.setTimeEntries();
+  }
 
   setTimeEntries(): void {
     if (this.cosplan() && this.cosplan()?.id) {
       this.timeEntryApiService
-        .getAllByCosplan$(this.cosplan()?.id as number)
+        .getAllByCosplan$(this.cosplan()?.id as number, this.offset, this.paginator.pageSize)
         .subscribe((res) => {
           this.loading.set(false);
-          this.timeEntries.set(res);
-          this.dataSource.data = res;
+          this.timeEntryCount.set(res.count);
+          this.timeEntries.set(res.timeEntries);
+          this.dataSource.data = res.timeEntries;
         });
     }
   }
 
   ngAfterViewInit() {
+    this.pageSize = this.paginator.pageSize;
     this.setTimeEntries();
-    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
     //to find sublayer data (ex. timeentry.part.name)

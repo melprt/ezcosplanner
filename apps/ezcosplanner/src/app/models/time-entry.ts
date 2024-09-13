@@ -15,3 +15,8 @@ export interface TimeEntry {
       };
     } | null
 }
+
+export interface TimeEntryApiResult {
+  timeEntries: TimeEntry[],
+  count: number
+}

@@ -1,4 +1,4 @@
-@if (!loading()) {
+<div [ngClass]="{hidden: loading()}"> 
   <div [ngClass]="{hidden: !dataSource.data.length}">
     <div class="flex w-full justify-end items-center gap-4">
       @if (selection.hasValue()) {
@@ -69,7 +69,7 @@
   
     </table>
   
-    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" aria-label="Select page of data"></mat-paginator>
+    <mat-paginator (page)="onPaginateChange($event)" [pageSizeOptions]="[2, 4, 6, 100]" [length]="timeEntryCount()" aria-label="Select page of data"></mat-paginator>
   </div>
   
   <div [ngClass]="{hidden: dataSource.data.length > 0}" class="flex flex-col justify-center items-center text-3xl gap-6 h-full">
@@ -77,4 +77,4 @@
       width="150" height="150" />
     <h3>Tu n'a pas encore renseigné de temps passé</h3>
   </div>
-}
+</div>

@@ -1,27 +1,53 @@
-import { FastifyInstance, FastifyRequest } from "fastify";
-import { deleteTimeEntries, deleteTimeEntry, findAllTimeEntryForCosplan } from "../services/time-entry.service";
-import { DeleteTimeEntrySchema } from "../schemas/time-entry";
-import { JsonSchemaToTsProvider } from "@fastify/type-provider-json-schema-to-ts";
+import { FastifyInstance, FastifyRequest } from 'fastify';
+import {
+  deleteTimeEntries,
+  findAllTimeEntryForCosplan,
+  getTotalTimeEntryForCosplan,
+} from '../services/time-entry.service';
+import {
+  deleteTimeEntrySchema,
+  getTimeEntrySchema,
+} from '../schemas/time-entry';
+import { JsonSchemaToTsProvider } from '@fastify/type-provider-json-schema-to-ts';
 
 export default async function (fastify: FastifyInstance) {
-    fastify.get(
-      '/timeentry/:cosplanid',
-      async (request: FastifyRequest<{ Params: { cosplanid: number } }>) =>
-        await findAllTimeEntryForCosplan(fastify.prisma, +request.params.cosplanid)
+  fastify
+    .withTypeProvider<JsonSchemaToTsProvider>()
+    .get(
+      '/timeentry/:cosplanId',
+      { schema: getTimeEntrySchema },
+      async (
+        request: FastifyRequest<{
+          Params: { cosplanId: number };
+          Querystring: { offset: number; limit: number };
+        }>
+      ) => {
+        const { offset, limit } = request.query;
+
+        const count = await getTotalTimeEntryForCosplan(
+          fastify.prisma,
+          +request.params.cosplanId,
+        );
+
+        const timeEntries = await findAllTimeEntryForCosplan(
+          fastify.prisma,
+          +request.params.cosplanId,
+          offset,
+          limit
+        );
+
+        return {
+          timeEntries,
+          count
+        };
+      }
     );
-    
-    // fastify.delete(
-    //   '/timeentry/:id',
-    //   async (request: FastifyRequest<{ Params: { id: number } }>) =>
-    //     await deleteTimeEntry(fastify.prisma, +request.params.id)
-    // );
-    
-    fastify
+
+  fastify
     .withTypeProvider<JsonSchemaToTsProvider>()
     .delete(
       '/timeentry',
-      { schema: DeleteTimeEntrySchema},
-      async (request) =>
-        await deleteTimeEntries(fastify.prisma, request.body)
+      { schema: deleteTimeEntrySchema },
+      async (request) => await deleteTimeEntries(fastify.prisma, request.body)
     );
 }
