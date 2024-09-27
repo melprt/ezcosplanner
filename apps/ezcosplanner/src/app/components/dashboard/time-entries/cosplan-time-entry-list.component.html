@@ -1,7 +1,7 @@
 <div [ngClass]="{hidden: loading()}">
   <div class="flex flex-row gap-9">
     <span class="pr-20"></span>
-    <div [formGroup]="filterForm" class="flex flex-row  grid grid-cols-3 w-3/4 gap-9">
+    <div [formGroup]="filterForm" class="flex flex-row grid grid-cols-4 w-full gap-9 items-center">
       <ezc-date-range-picker [bgTransparent]="true"
           [formControlStart]="filterForm.controls.dateStart" [formControlEnd]="filterForm.controls.dateEnd" />
       <mat-form-field class="filter [&>*]:!bg-transparent" appearance="fill">
@@ -12,7 +12,11 @@
         <mat-label>Tâche</mat-label>
         <input matInput [formControlName]="'task'">
       </mat-form-field>
-      <span></span>
+      <button mat-raised-button 
+          (click)="resetFilters()"
+          class="hover:shadow-none hover:shadow-bg-transparent shadow-md" aria-label="button reset filters">
+          Réinitialiser les filtres
+      </button>
     </div>
   </div>
   <div [ngClass]="{hidden: !dataSource.data.length}">

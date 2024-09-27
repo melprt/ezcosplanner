@@ -244,18 +244,15 @@ export class CosplanTimeEntryListComponent implements AfterViewInit {
     }`;
   }
 
-  // get total time by request instead
-  // getTotalTime(): number | undefined {
-  //   return this.dataSource.data
-  //     ?.map((t) => t.time)
-  //     .reduce((acc, value) => acc + value, 0);
-  // }
-
   deleteSelection(): void {
     const ids = this.selection.selected.map((record) => record.id);
 
     this.timeEntryApiService.deleteTimeEntries$(ids).subscribe(() => {
       this.setTimeEntries();
     });
+  }
+
+  resetFilters() : void {
+    this.filterForm.reset();
   }
 }
