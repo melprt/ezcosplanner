@@ -5,10 +5,11 @@ import {
   ViewChild,
   inject,
   signal,
-  effect,
+  DestroyRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {
   MatPaginator,
@@ -21,12 +22,32 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { getFrenchPaginatorIntl } from '../../../french-paginator-intl';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
-import { TimeEntry } from '../../../models/time-entry';
+import {
+  TimeEntry,
+  TimeEntryApiResult,
+  TimeEntryFilters,
+} from '../../../models/time-entry';
 import { TimeEntryApiService } from '../../../services/time-entry-api.service';
 import { CosplanService } from '../../../services/cosplan.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SecondToTimePipe } from '../../../pipes/second-to-time.pipe';
 import { MatButtonModule } from '@angular/material/button';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { DateRangePickerComponent } from '../../datepicker/date-range-picker.component';
+import {
+  combineLatest,
+  debounceTime,
+  distinctUntilChanged,
+  iif,
+  map,
+  Observable,
+  of,
+  startWith,
+  switchMap,
+} from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { CustomDateAdapter, MY_DATE_FORMAT } from '../../../utils/custom-date-adapter';
 
 @Component({
   selector: 'ezc-cosplan-time-entry-list',
@@ -43,54 +64,81 @@ import { MatButtonModule } from '@angular/material/button';
     SecondToTimePipe,
     MatButtonModule,
     NgOptimizedImage,
+    DateRangePickerComponent,
+    ReactiveFormsModule,
+    MatFormField,
   ],
   templateUrl: './cosplan-time-entry-list.component.html',
   styleUrl: './cosplan-time-entry-list.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
   providers: [
     { provide: MatPaginatorIntl, useValue: getFrenchPaginatorIntl() },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMAT },
+    { provide: DateAdapter, useClass: CustomDateAdapter },
   ],
 })
 export class CosplanTimeEntryListComponent implements AfterViewInit {
-  timeEntries = signal<TimeEntry[] | null>(null);
   loading = signal<boolean>(true);
   timeEntryCount = signal<number>(0);
+  timeEntrySum = signal<number>(0);
   dataSource = new MatTableDataSource<TimeEntry>();
   selection = new SelectionModel<TimeEntry>(true, []);
   displayedColumns: string[] = ['select', 'day', 'part', 'task', 'time'];
+  detectorRef = inject(ChangeDetectorRef);
+
+  filterForm = new FormGroup({
+    element: new FormControl<string>(''),
+    task: new FormControl<string>(''),
+    dateStart: new FormControl<Date | null>(null),
+    dateEnd: new FormControl<Date | null>(null),
+  });
 
   protected route = inject(ActivatedRoute);
   private timeEntryApiService = inject(TimeEntryApiService);
   private cosplanService = inject(CosplanService);
   private cosplan = this.cosplanService.cosplan;
   private offset = 0;
-  
+  private pageSize = 0;
+  private destroyRef = inject(DestroyRef);
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  private pageSize = 0;
 
-  onPaginateChange(event: PageEvent) {
-    //if page size has changed go to first page
-    if (this.pageSize !== event.pageSize) {
-      this.pageSize = event.pageSize;
-      this.paginator.firstPage();
-    }
-    this.offset = this.paginator.pageSize * this.paginator.pageIndex;
-    this.setTimeEntries();
-  }
+  elementFilter$: Observable<null | string> = this.filterForm
+    .get('element')!
+    .valueChanges.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      takeUntilDestroyed(this.destroyRef),
+      startWith('')
+    );
 
-  setTimeEntries(): void {
-    if (this.cosplan() && this.cosplan()?.id) {
-      this.timeEntryApiService
-        .getAllByCosplan$(this.cosplan()?.id as number, this.offset, this.paginator.pageSize)
-        .subscribe((res) => {
-          this.loading.set(false);
-          this.timeEntryCount.set(res.count);
-          this.timeEntries.set(res.timeEntries);
-          this.dataSource.data = res.timeEntries;
-        });
-    }
-  }
+  taskFilter$: Observable<null | string> = this.filterForm
+    .get('task')!
+    .valueChanges.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      takeUntilDestroyed(this.destroyRef),
+      startWith('')
+    );
+
+  endDateFilter$: Observable<null | undefined | Date> = this.filterForm
+    .get('dateEnd')!
+    .valueChanges.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      takeUntilDestroyed(this.destroyRef),
+      startWith(undefined)
+    );
+
+  startDateFilter$: Observable<null | undefined | Date> = this.filterForm
+    .get('dateStart')!
+    .valueChanges.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      takeUntilDestroyed(this.destroyRef),
+      startWith(undefined)
+    );
 
   ngAfterViewInit() {
     this.pageSize = this.paginator.pageSize;
@@ -104,12 +152,68 @@ export class CosplanTimeEntryListComponent implements AfterViewInit {
     };
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  onPaginateChange(event: PageEvent) {
+    //if page size has changed go to first page
+    if (this.pageSize !== event.pageSize) {
+      this.pageSize = event.pageSize;
+      this.paginator.firstPage();
+    }
+    this.offset = this.paginator.pageSize * this.paginator.pageIndex;
+    this.setTimeEntries();
+  }
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+  setTimeEntries(): void {
+    if (this.cosplan() && this.cosplan()?.id) {
+      combineLatest([
+        this.elementFilter$,
+        this.taskFilter$,
+        this.startDateFilter$,
+        this.endDateFilter$,
+      ])
+        .pipe(
+          switchMap(([element, task, startDate, endDate]) => {
+            if (startDate) {
+              startDate = new Date(
+                Date.UTC(
+                  startDate.getFullYear(),
+                  startDate.getMonth(),
+                  startDate.getDate()
+                )
+              );
+            }
+
+            if (endDate) {
+              endDate = new Date(
+                Date.UTC(
+                  endDate.getFullYear(),
+                  endDate.getMonth(),
+                  endDate.getDate()
+                )
+              );
+            }
+
+            const filters: Partial<TimeEntryFilters> = {
+              startDate,
+              endDate,
+              element,
+              task,
+            };
+
+            return this.timeEntryApiService.getAllByCosplan$(
+              this.cosplan()?.id as number,
+              this.offset,
+              this.paginator.pageSize,
+              filters
+            );
+          })
+        )
+        .subscribe((res: TimeEntryApiResult) => {
+          this.dataSource.data = res.timeEntries;
+          this.timeEntryCount.set(res.count);
+          this.timeEntrySum.set(res.sum);
+          this.loading.set(false);
+          this.detectorRef.markForCheck();
+        });
     }
   }
 
@@ -140,18 +244,17 @@ export class CosplanTimeEntryListComponent implements AfterViewInit {
     }`;
   }
 
-  getTotalTime(): number | undefined {
-    return this.timeEntries()
-      ?.map((t) => t.time)
-      .reduce((acc, value) => acc + value, 0);
-  }
+  // get total time by request instead
+  // getTotalTime(): number | undefined {
+  //   return this.dataSource.data
+  //     ?.map((t) => t.time)
+  //     .reduce((acc, value) => acc + value, 0);
+  // }
 
-  deleteSelection () : void {
-    const ids = this.selection.selected.map(record => record.id)
-  
-    this.timeEntryApiService
-    .deleteTimeEntries$(ids)
-    .subscribe(() => {
+  deleteSelection(): void {
+    const ids = this.selection.selected.map((record) => record.id);
+
+    this.timeEntryApiService.deleteTimeEntries$(ids).subscribe(() => {
       this.setTimeEntries();
     });
   }

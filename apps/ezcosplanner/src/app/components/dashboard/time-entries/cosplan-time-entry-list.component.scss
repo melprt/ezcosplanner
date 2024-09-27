@@ -11,6 +11,13 @@ table {
     border: none;
     text-align: center;
     font-size: larger;
+    
+    ::ng-deep .mat-sort-header-arrow {
+      margin: 10px 0 0 6px;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+    }
 
     ::ng-deep .mat-sort-header-container {
       display: flex;
@@ -22,7 +29,7 @@ table {
     }
   }
 
-  .mat-mdc-row {
+  ::ng-deep .mat-mdc-row {
     height: 80px;
 
     & td:not(:first-child) {
@@ -43,13 +50,13 @@ table {
       border-bottom-right-radius: 3px;
     }
 
-    .mat-mdc-cell {
+    ::ng-deep .mat-mdc-cell {
       text-align: center;
       border: none;
     }
   }
 
-  .mat-mdc-footer-row {
+  ::ng-deep .mat-mdc-footer-row {
     height: 60px;
 
     & td:not(:first-child) {
@@ -69,7 +76,7 @@ table {
   }
 }
 
-.mat-mdc-form-field {
+::ng-deep .mat-mdc-form-field {
   font-size: 14px;
   width: 100%;
 }

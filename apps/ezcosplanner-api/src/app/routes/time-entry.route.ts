@@ -3,6 +3,7 @@ import {
   deleteTimeEntries,
   findAllTimeEntryForCosplan,
   getTotalTimeEntryForCosplan,
+  getTotalTimeFromTimeEntries,
 } from '../services/time-entry.service';
 import {
   deleteTimeEntrySchema,
@@ -13,32 +14,32 @@ import { JsonSchemaToTsProvider } from '@fastify/type-provider-json-schema-to-ts
 export default async function (fastify: FastifyInstance) {
   fastify
     .withTypeProvider<JsonSchemaToTsProvider>()
-    .get(
+    .post(
       '/timeentry/:cosplanId',
       { schema: getTimeEntrySchema },
-      async (
-        request: FastifyRequest<{
-          Params: { cosplanId: number };
-          Querystring: { offset: number; limit: number };
-        }>
-      ) => {
-        const { offset, limit } = request.query;
-
+      async (request) => {
         const count = await getTotalTimeEntryForCosplan(
           fastify.prisma,
           +request.params.cosplanId,
+          request.body
         );
+
+        const sum = await getTotalTimeFromTimeEntries( 
+          fastify.prisma,
+          +request.params.cosplanId,
+          request.body
+        )
 
         const timeEntries = await findAllTimeEntryForCosplan(
           fastify.prisma,
           +request.params.cosplanId,
-          offset,
-          limit
+          request.body
         );
 
         return {
           timeEntries,
-          count
+          count,
+          sum
         };
       }
     );

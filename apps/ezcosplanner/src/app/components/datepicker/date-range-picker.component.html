@@ -1,0 +1,20 @@
+<mat-form-field [appearance]="appearance" [ngClass]="{'[&>*]:!bg-transparent': bgTransparent}">
+    <mat-label>Dates</mat-label>
+    <!-- <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker"> -->
+    <mat-date-range-input [rangePicker]="picker">
+        <!-- <input matStartDate [formControlName]="'start'" placeholder="début"> -->
+        <input matStartDate [formControl]="formControlStart" placeholder="début">
+        <input matEndDate [formControl]="formControlEnd" placeholder="fin">
+        <!-- <input matEndDate [formControlName]="'end'" placeholder="fin"> -->
+    </mat-date-range-input>
+    <mat-hint>jj/mm/yyyy – jj/mm/yyyy</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+
+    <!-- @if (dateRange.controls.start.hasError('matStartDateInvalid')) {
+    <mat-error>Date de début invalide</mat-error>
+    }
+    @if (dateRange.controls.end.hasError('matEndDateInvalid')) {
+    <mat-error>Date de fin invalide</mat-error>
+    } -->
+</mat-form-field>

@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, first, map, switchMap } from 'rxjs';
 import { CosplanService } from './cosplan.service';
 import { Cosplan } from '../models/cosplan';
-import { TimeEntry, TimeEntryApiResult } from '../models/time-entry';
+import { TimeEntryApiResult, TimeEntryFilters } from '../models/time-entry';
 
 @Injectable()
 export class TimeEntryApiService {
@@ -15,14 +15,14 @@ export class TimeEntryApiService {
   getAllByCosplan$(
     cosplanId: number,
     offset: number,
-    limit: number
+    limit: number,
+    filters: Partial<TimeEntryFilters>|null
   ): Observable<TimeEntryApiResult> {
     return this.http
-      .get<TimeEntryApiResult>(`${this.baseTimeEntryUrl}/${cosplanId}`, {
-        params: {
-          'offset': offset,
-          'limit': limit
-        }
+      .post<TimeEntryApiResult>(`${this.baseTimeEntryUrl}/${cosplanId}`, {
+          filters,
+          skip: offset,
+          take: limit
       })
       .pipe(map((res) => res));
   }

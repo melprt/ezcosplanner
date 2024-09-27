@@ -18,5 +18,13 @@ export interface TimeEntry {
 
 export interface TimeEntryApiResult {
   timeEntries: TimeEntry[],
-  count: number
+  count: number,
+  sum: number
+}
+
+export interface TimeEntryFilters {
+  startDate : Date|null,
+  endDate : Date|null,
+  element : string|null,
+  task : string|null,
 }

@@ -1,12 +1,11 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { TimeEntryResult } from '../model/dto/time-entry-result';
-import { deleteTimeEntryBody } from '../schemas/time-entry';
+import { deleteTimeEntryBody, getTimeEntryBody } from '../schemas/time-entry';
 
 export async function findAllTimeEntryForCosplan(
   prisma: PrismaClient,
   cosplanId: number,
-  skip: number,
-  take: number
+  { skip, take, filters }: getTimeEntryBody
 ): Promise<TimeEntryResult[]> {
   const select = {
     id: true,
@@ -32,23 +31,6 @@ export async function findAllTimeEntryForCosplan(
     },
   };
 
-  const where = {
-    OR: [
-      {
-        part: {
-          cosplanId,
-        },
-      },
-      {
-        task: {
-          part: {
-            cosplanId,
-          },
-        },
-      },
-    ],
-  };
-
   const orderBy: Prisma.TimeEntryOrderByWithRelationInput[] = [
     {
       day: 'desc',
@@ -58,7 +40,10 @@ export async function findAllTimeEntryForCosplan(
   const timeEntryQueryResult = await prisma.timeEntry.findMany({
     distinct: 'id',
     select,
-    where,
+    where: {
+      OR: getConditionByCosplan(cosplanId),
+      AND: getConditionByFilters(filters),
+    },
     orderBy,
     skip,
     take,
@@ -69,7 +54,8 @@ export async function findAllTimeEntryForCosplan(
 
 export async function getTotalTimeEntryForCosplan(
   prisma: PrismaClient,
-  cosplanId: number
+  cosplanId: number,
+  { filters }: getTimeEntryBody
 ): Promise<number> {
   const count = (
     await prisma.timeEntry.aggregate({
@@ -77,25 +63,85 @@ export async function getTotalTimeEntryForCosplan(
         _all: true,
       },
       where: {
-        OR: [
-          {
-            part: {
-              cosplanId,
-            },
-          },
-          {
-            task: {
-              part: {
-                cosplanId,
-              },
-            },
-          },
-        ],
+        OR: getConditionByCosplan(cosplanId),
+        AND: getConditionByFilters(filters),
       },
     })
   )._count._all;
 
   return count;
+}
+
+export async function getTotalTimeFromTimeEntries(
+  prisma: PrismaClient,
+  cosplanId: number,
+  { skip, take, filters }: getTimeEntryBody
+): Promise<number|null> {
+  const sum = (
+    await prisma.timeEntry.aggregate({
+      _sum: {
+          time: true                                                                        
+      },
+      where: {
+        OR: getConditionByCosplan(cosplanId),
+        AND: getConditionByFilters(filters),
+      },
+      skip,
+      take
+    })
+  )._sum;
+
+  return sum.time;
+}
+
+
+function getConditionByFilters(filters : getTimeEntryBody['filters']) {
+  return [
+    {
+      AND: [
+        {
+          AND: [
+            filters?.startDate ? { day: { gte: filters.startDate } } : {},
+            filters?.endDate ? { day: { lte: filters.endDate } } : {},
+          ],
+        },
+        filters?.task ? { task: { name: { contains: filters.task } } } : {},
+        {
+          OR: [
+            filters?.element
+              ? { part: { name: { contains: filters.element } } }
+              : {},
+            filters?.element
+              ? {
+                  task: {
+                    part: {
+                      name: { contains: filters?.element },
+                    },
+                  },
+                }
+              : {},
+          ],
+        },
+      ],
+    },
+  ];
+}
+
+function getConditionByCosplan (cosplanId: number) {
+  return [
+    {
+      part: {
+        cosplanId,
+      },
+    },
+    {
+      task: {
+        part: {
+          cosplanId,
+        },
+      },
+    },
+  ];
 }
 
 export async function deleteTimeEntry(
