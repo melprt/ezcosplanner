@@ -57,7 +57,7 @@ export async function getTotalTimeEntryForCosplan(
   cosplanId: number,
   { filters }: getTimeEntryBody
 ): Promise<number> {
-  const count = (
+  return (
     await prisma.timeEntry.aggregate({
       _count: {
         _all: true,
@@ -68,8 +68,6 @@ export async function getTotalTimeEntryForCosplan(
       },
     })
   )._count._all;
-
-  return count;
 }
 
 export async function getTotalTimeFromTimeEntries(
@@ -77,7 +75,7 @@ export async function getTotalTimeFromTimeEntries(
   cosplanId: number,
   { skip, take, filters }: getTimeEntryBody
 ): Promise<number|null> {
-  const sum = (
+  return (
     await prisma.timeEntry.aggregate({
       _sum: {
           time: true                                                                        
@@ -89,9 +87,7 @@ export async function getTotalTimeFromTimeEntries(
       skip,
       take
     })
-  )._sum;
-
-  return sum.time;
+  )._sum.time;
 }
 
 

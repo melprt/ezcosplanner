@@ -18,10 +18,10 @@ import { CustomDateAdapter } from '../../utils/custom-date-adapter';
 export class DateRangePickerComponent {
   @Input() appearance : MatFormFieldAppearance = 'fill';
   @Input() bgTransparent = false;
-  private readonly _adapter = inject<DateAdapter<unknown, unknown>>(DateAdapter);
-  private readonly _locale = signal(inject<unknown>(MAT_DATE_LOCALE));
   @Input({"required": true}) formControlStart !: FormControl;  
   @Input({"required": true}) formControlEnd !: FormControl;  
+  private readonly _adapter = inject<DateAdapter<unknown, unknown>>(DateAdapter);
+  private readonly _locale = signal(inject<unknown>(MAT_DATE_LOCALE));
 
   constructor () {
     this._locale.set('fr');

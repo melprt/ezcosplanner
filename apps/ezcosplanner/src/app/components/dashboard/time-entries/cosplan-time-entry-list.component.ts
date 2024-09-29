@@ -78,14 +78,15 @@ import { CustomDateAdapter, MY_DATE_FORMAT } from '../../../utils/custom-date-ad
   ],
 })
 export class CosplanTimeEntryListComponent implements AfterViewInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
   loading = signal<boolean>(true);
   timeEntryCount = signal<number>(0);
   timeEntrySum = signal<number>(0);
   dataSource = new MatTableDataSource<TimeEntry>();
   selection = new SelectionModel<TimeEntry>(true, []);
   displayedColumns: string[] = ['select', 'day', 'part', 'task', 'time'];
-  detectorRef = inject(ChangeDetectorRef);
-
   filterForm = new FormGroup({
     element: new FormControl<string>(''),
     task: new FormControl<string>(''),
@@ -94,17 +95,14 @@ export class CosplanTimeEntryListComponent implements AfterViewInit {
   });
 
   protected route = inject(ActivatedRoute);
+  private detectorRef = inject(ChangeDetectorRef);
   private timeEntryApiService = inject(TimeEntryApiService);
   private cosplanService = inject(CosplanService);
   private cosplan = this.cosplanService.cosplan;
   private offset = 0;
   private pageSize = 0;
   private destroyRef = inject(DestroyRef);
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-
-  elementFilter$: Observable<null | string> = this.filterForm
+  private elementFilter$: Observable<null | string> = this.filterForm
     .get('element')!
     .valueChanges.pipe(
       debounceTime(400),
@@ -112,8 +110,7 @@ export class CosplanTimeEntryListComponent implements AfterViewInit {
       takeUntilDestroyed(this.destroyRef),
       startWith('')
     );
-
-  taskFilter$: Observable<null | string> = this.filterForm
+  private taskFilter$: Observable<null | string> = this.filterForm
     .get('task')!
     .valueChanges.pipe(
       debounceTime(400),
@@ -121,8 +118,7 @@ export class CosplanTimeEntryListComponent implements AfterViewInit {
       takeUntilDestroyed(this.destroyRef),
       startWith('')
     );
-
-  endDateFilter$: Observable<null | undefined | Date> = this.filterForm
+  private endDateFilter$: Observable<null | undefined | Date> = this.filterForm
     .get('dateEnd')!
     .valueChanges.pipe(
       debounceTime(400),
@@ -130,8 +126,7 @@ export class CosplanTimeEntryListComponent implements AfterViewInit {
       takeUntilDestroyed(this.destroyRef),
       startWith(undefined)
     );
-
-  startDateFilter$: Observable<null | undefined | Date> = this.filterForm
+  private startDateFilter$: Observable<null | undefined | Date> = this.filterForm
     .get('dateStart')!
     .valueChanges.pipe(
       debounceTime(400),

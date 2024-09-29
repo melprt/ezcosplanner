@@ -22,11 +22,15 @@ export default fp((fastify, _, done) => {
       },
     ],
   })
-  prisma.$on('query', (e) => {
-    console.log('Query: ' + e.query)
-    console.log('Params: ' + e.params)
-    console.log('Duration: ' + e.duration + 'ms')
-  })
+
+  if (process.env.NODE_ENV === 'development') {
+    prisma.$on('query', (e) => {
+      console.log('Query: ' + e.query)
+      console.log('Params: ' + e.params)
+      console.log('Duration: ' + e.duration + 'ms')
+    });
+  }
+
   fastify.decorate('prisma', prisma)
   done()
 })

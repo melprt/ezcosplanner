@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, first, map, switchMap } from 'rxjs';
+import { Observable, first, switchMap } from 'rxjs';
 import { CosplanService } from './cosplan.service';
 import { Cosplan } from '../models/cosplan';
 import { TimeEntryApiResult, TimeEntryFilters } from '../models/time-entry';
@@ -23,8 +23,7 @@ export class TimeEntryApiService {
           filters,
           skip: offset,
           take: limit
-      })
-      .pipe(map((res) => res));
+      });
   }
 
   /**
