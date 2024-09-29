@@ -46,8 +46,15 @@ import {
   switchMap,
 } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { CustomDateAdapter, MY_DATE_FORMAT } from '../../../utils/custom-date-adapter';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
+import {
+  CustomDateAdapter,
+  MY_DATE_FORMAT,
+} from '../../../utils/custom-date-adapter';
 
 @Component({
   selector: 'ezc-cosplan-time-entry-list',
@@ -126,14 +133,15 @@ export class CosplanTimeEntryListComponent implements AfterViewInit {
       takeUntilDestroyed(this.destroyRef),
       startWith(undefined)
     );
-  private startDateFilter$: Observable<null | undefined | Date> = this.filterForm
-    .get('dateStart')!
-    .valueChanges.pipe(
-      debounceTime(400),
-      distinctUntilChanged(),
-      takeUntilDestroyed(this.destroyRef),
-      startWith(undefined)
-    );
+  private startDateFilter$: Observable<null | undefined | Date> =
+    this.filterForm
+      .get('dateStart')!
+      .valueChanges.pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        takeUntilDestroyed(this.destroyRef),
+        startWith(undefined)
+      );
 
   ngAfterViewInit() {
     this.pageSize = this.paginator.pageSize;
@@ -166,41 +174,19 @@ export class CosplanTimeEntryListComponent implements AfterViewInit {
         this.endDateFilter$,
       ])
         .pipe(
-          switchMap(([element, task, startDate, endDate]) => {
-            if (startDate) {
-              startDate = new Date(
-                Date.UTC(
-                  startDate.getFullYear(),
-                  startDate.getMonth(),
-                  startDate.getDate()
-                )
-              );
-            }
-
-            if (endDate) {
-              endDate = new Date(
-                Date.UTC(
-                  endDate.getFullYear(),
-                  endDate.getMonth(),
-                  endDate.getDate()
-                )
-              );
-            }
-
-            const filters: Partial<TimeEntryFilters> = {
-              startDate,
-              endDate,
-              element,
-              task,
-            };
-
-            return this.timeEntryApiService.getAllByCosplan$(
+          switchMap(([element, task, startDate, endDate]) =>
+            this.timeEntryApiService.getAllByCosplan$(
               this.cosplan()?.id as number,
               this.offset,
               this.paginator.pageSize,
-              filters
-            );
-          })
+              {
+                startDate,
+                endDate,
+                element,
+                task,
+              }
+            )
+          )
         )
         .subscribe((res: TimeEntryApiResult) => {
           this.dataSource.data = res.timeEntries;
@@ -247,7 +233,7 @@ export class CosplanTimeEntryListComponent implements AfterViewInit {
     });
   }
 
-  resetFilters() : void {
+  resetFilters(): void {
     this.filterForm.reset();
   }
 }
