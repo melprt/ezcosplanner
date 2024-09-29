@@ -9,6 +9,8 @@ import { cosplanViewGuard } from './guards/cosplan-view.guard';
 import { FileApiService } from './services/file-api.service';
 import { CosplanPartComponent } from './components/dashboard/parts/edit/cosplan-part.component';
 import { PartApiService } from './services/part-api.service';
+import { CosplanTimeEntryListComponent } from './components/dashboard/time-entries/cosplan-time-entry-list.component';
+import { TimeEntryApiService } from './services/time-entry-api.service';
 
 export const appRoutes: Route[] = [
   {
@@ -26,7 +28,7 @@ export const appRoutes: Route[] = [
   {
     path: 'dashboard/:id',
     component: CosplanDashboardLayoutComponent,
-    providers: [CosplanService, PartApiService],
+    providers: [CosplanService, PartApiService, TimeEntryApiService],
     canActivate: [cosplanViewGuard],
     children: [
       {
@@ -52,6 +54,17 @@ export const appRoutes: Route[] = [
           }
         ]
       },
+      {
+        path: 'timeentry',
+        title: 'Temps passé',
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            component: CosplanTimeEntryListComponent,
+          }
+        ]
+      }
     ],
   },
 ];
