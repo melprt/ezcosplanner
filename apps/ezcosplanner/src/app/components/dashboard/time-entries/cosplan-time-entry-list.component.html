@@ -1,4 +1,7 @@
-<div [ngClass]="{hidden: loading()}">
+@if (cosplan(); as cosplan) {
+  <ezc-dashboard-title [cosplan]="cosplan" [subtitle]="'Temps passé'"></ezc-dashboard-title>
+}
+<div [ngClass]="{hidden: loading()}" class="flex flex-col">
   <div class="flex flex-row gap-9">
     <span class="pr-20"></span>
     <div [formGroup]="filterForm" class="flex flex-row grid grid-cols-4 w-full gap-9 items-center">
@@ -12,22 +15,22 @@
         <mat-label>Tâche</mat-label>
         <input matInput [formControlName]="'task'">
       </mat-form-field>
-      <button mat-raised-button 
-          (click)="resetFilters()"
-          class="hover:shadow-none hover:shadow-bg-transparent shadow-md" aria-label="button reset filters">
-          Réinitialiser les filtres
-      </button>
+      <div class="flex flex-row justify-between items-center">
+        <button mat-icon-button
+            (click)="resetFilters()"
+            class="hover:shadow-none hover:shadow-bg-transparent shadow-md button-icon" aria-label="button reset filters">
+            <mat-icon class="button-icon__icon">refresh</mat-icon>
+        </button>
+          @if (selection.hasValue()) {
+            <button mat-flat-button (click)="deleteSelection()"
+              class="hover:shadow-none hover:shadow-bg-transparent shadow-md" aria-label="button delete time entries">
+              Supprimer la sélection
+            </button>
+          }
+      </div>
     </div>
   </div>
   <div [ngClass]="{hidden: !dataSource.data.length}">
-    <div class="flex w-full justify-end items-center gap-4">
-      @if (selection.hasValue()) {
-      <button mat-flat-button (click)="deleteSelection()"
-        class="hover:shadow-none hover:shadow-bg-transparent shadow-md" aria-label="button delete time entries">
-        Supprimer la sélection
-      </button>
-      }
-    </div>
     <table mat-table [dataSource]="dataSource" class="!shadow-none mb-10" matSort>
       <!-- Checkbox Column -->
       <ng-container matColumnDef="select">
@@ -52,7 +55,7 @@
 
       <ng-container matColumnDef="part">
         <th mat-header-cell *matHeaderCellDef>
-          Elément
+          Élément
         </th>
         <td mat-cell *matCellDef="let element">
           @if (element?.part || element?.task?.part) {
@@ -97,7 +100,7 @@
       aria-label="Select page of data"></mat-paginator>
   </div>
   <div [ngClass]="{hidden: dataSource.data.length > 0}"
-    class="flex flex-col justify-center items-center text-3xl gap-6 h-full">
+    class="flex flex-col justify-center items-center text-3xl gap-6 mt-20 h-full">
     <img class="mb-auto" mat-card-image [ngSrc]="'/assets/cat_confused_secondary_256.png'" alt="app title image"
       width="150" height="150" />
     <h3>Aucune entrée de temps trouvée</h3>

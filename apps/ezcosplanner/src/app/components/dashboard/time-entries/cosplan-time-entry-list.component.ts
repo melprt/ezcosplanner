@@ -55,6 +55,8 @@ import {
   CustomDateAdapter,
   MY_DATE_FORMAT,
 } from '../../../utils/custom-date-adapter';
+import { MatIcon } from '@angular/material/icon';
+import { DashboardTitleComponent } from '../title/dashboard-title.component';
 
 @Component({
   selector: 'ezc-cosplan-time-entry-list',
@@ -74,6 +76,8 @@ import {
     DateRangePickerComponent,
     ReactiveFormsModule,
     MatFormField,
+    MatIcon,
+    DashboardTitleComponent
   ],
   templateUrl: './cosplan-time-entry-list.component.html',
   styleUrl: './cosplan-time-entry-list.component.scss',
@@ -101,11 +105,12 @@ export class CosplanTimeEntryListComponent implements AfterViewInit {
     dateEnd: new FormControl<Date | null>(null),
   });
 
+  protected cosplanService = inject(CosplanService);
+  protected cosplan = this.cosplanService.cosplan;
   protected route = inject(ActivatedRoute);
+  
   private detectorRef = inject(ChangeDetectorRef);
   private timeEntryApiService = inject(TimeEntryApiService);
-  private cosplanService = inject(CosplanService);
-  private cosplan = this.cosplanService.cosplan;
   private offset = 0;
   private pageSize = 0;
   private destroyRef = inject(DestroyRef);

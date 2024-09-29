@@ -4,7 +4,6 @@ import { CosplanService } from '../../../services/cosplan.service';
 import { DashboardTitleComponent } from '../title/dashboard-title.component';
 import { AddPartCardComponent } from './add-card/add-part-card.component';
 import { PartCardComponent } from './card/part-card.component';
-import { Cosplan } from '../../../models/cosplan';
 
 @Component({
   selector: 'ezc-cosplan-part-list',
