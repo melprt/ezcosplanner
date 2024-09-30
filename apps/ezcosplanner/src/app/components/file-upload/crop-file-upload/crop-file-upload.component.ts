@@ -42,6 +42,8 @@ import { DialogService } from '../../../services/dialog.service';
 export class CropFileUploadComponent {
   @Input({ required: true }) fileType!: FileType;
   @Input() entityId?: number;
+  @Input() title?: string;
+  
   existingFile = input<UploadedFile | null>(null);
 
   displayedFile = computed(
@@ -143,6 +145,7 @@ export class CropFileUploadComponent {
     if (file) {
       // Suggestion: on delete or other operations should trigger whole cosplan dashboard refresh data
       this.fileUploadService.deleteFile$(file.id, file.path).subscribe(() => {
+        this.fileIdOutput.emit(0);
         this.resetImgBrowse();
         this.snackBar.openFromComponent(SimpleSnackbarImgComponent, {
           data: {

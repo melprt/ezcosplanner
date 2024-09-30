@@ -57,6 +57,7 @@ import {
 } from '../../../utils/custom-date-adapter';
 import { MatIcon } from '@angular/material/icon';
 import { DashboardTitleComponent } from '../title/dashboard-title.component';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'ezc-cosplan-time-entry-list',
@@ -77,7 +78,8 @@ import { DashboardTitleComponent } from '../title/dashboard-title.component';
     ReactiveFormsModule,
     MatFormField,
     MatIcon,
-    DashboardTitleComponent
+    DashboardTitleComponent,
+    MatTooltip
   ],
   templateUrl: './cosplan-time-entry-list.component.html',
   styleUrl: './cosplan-time-entry-list.component.scss',

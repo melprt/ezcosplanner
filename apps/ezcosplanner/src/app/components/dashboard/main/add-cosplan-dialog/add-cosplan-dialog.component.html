@@ -1,4 +1,4 @@
-<h2 mat-dialog-title class="!mb-6">Création du cosplan</h2>
+<h2 mat-dialog-title class="!mb-6">Nouveau cosplan</h2>
 <mat-dialog-content>
   <div [formGroup]="cosplanForm">
     <mat-form-field class="mb-3 w-full edit-field" appearance="outline">
@@ -26,7 +26,11 @@
     <input class="hidden" [formControlName]="'fileId'">
 
     <div class="relative cosplan-img-container">
-      <ezc-crop-file-upload [fileType]="'cosplan'" (fileIdOutput)="setFileId($event)"></ezc-crop-file-upload>
+      <ezc-crop-file-upload 
+        [title]="'Choisi une image pour ton cosplan !'"
+        [fileType]="'cosplan'" 
+        (fileIdOutput)="setFileId($event)">
+      </ezc-crop-file-upload>
     </div>
   </div>
 

@@ -1,0 +1,26 @@
+<h2 mat-dialog-title class="!mb-6">Nouvelle photo de WIP</h2>
+<mat-dialog-content>
+  <div [formGroup]="wipPictureForm" (keydown.enter)="close(true)">
+    <div class="relative wip-img-container mb-8">
+      <ezc-crop-file-upload 
+        [title]="'Choisi ta photo de WIP !'"
+        [fileType]="'wip'" 
+        (fileIdOutput)="setFileId($event)">
+      </ezc-crop-file-upload>
+    </div>
+    <mat-form-field class="mb-3 w-full edit-field" appearance="outline">
+      <mat-label>Titre</mat-label>
+      <input matInput [formControlName]="'title'">
+    </mat-form-field>
+    <mat-form-field class="mb-3 w-full edit-field" appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput [formControlName]="'title'"></textarea>
+    </mat-form-field>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions class="flex gap-4">
+    <button (click)="close(false)">Annuler</button>
+    <button (click)="close(true)" mat-button cdkFocusInitial [disabled]="wipPictureForm.invalid">Valider</button>
+
+</mat-dialog-actions>

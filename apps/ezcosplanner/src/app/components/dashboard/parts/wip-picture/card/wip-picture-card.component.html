@@ -1,0 +1,25 @@
+<div [ngClass]="{'expanded grip grid-cols-2 gap-4' : expandedPicture(), 'cursor-zoom-in': !expandedPicture()}"
+    class="cosplan-wip-picture-card rounded-xl border border-stone-300 expandable-picture">  
+    <img mat-card-image class="w-full h-full object-cover"
+    [src]="'https://images.unsplash.com/photo-1550948537-130a1ce83314?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2552&q=80'">
+    @if (expandedPicture()) {
+        <button mat-icon-button
+            (click)="togglePictureFullSize()"
+            class="hover:shadow-none hover:shadow-bg-transparent shadow-md button-icon" aria-label="button close full size picture">
+            <mat-icon class="button-icon__icon">cancel</mat-icon>
+        </button>
+
+        @if (true) {
+            <div class="text-lg flex flex-col justify-center items-center wip-description">
+                <h3>Titre</h3>
+                <p>Miaw miaw miaw</p>
+            </div>
+        }
+    }
+    
+    @if (!expandedPicture()) {
+        <div class="see-more" (click)="togglePictureFullSize()">
+            <span class="text">voir plus</span>
+        </div>
+    }
+</div>

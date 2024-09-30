@@ -3,6 +3,80 @@
 }
 
 @if (part(); as part) {
-    {{part.id}}
-    {{part.name}}
+    <div class="flex justify-between grid grid-cols-3 gap-20">
+        <div class="col-span-2">
+            <div class="part-wip">
+                <h2 class="text-3xl">WIP</h2>
+                <div class="flex flex-row gap-6 min-w-0 flex-wrap">
+                    <ezc-wip-picture-card></ezc-wip-picture-card>
+                    <ezc-add-wip-picture-card [partId]="+partId"></ezc-add-wip-picture-card>
+                </div>
+            </div>
+            @if (part.materials) {
+                <div class="materials">
+                    <h2 class="text-3xl">Matériaux utilisés</h2>
+                </div>
+            }
+        </div>
+        <div class="part-tasks">
+            <h2 class="text-3xl">Liste des tâches</h2>
+            <div class=" p-4 rounded-xl part-tasks__content border border-stone-300">
+                <mat-selection-list #tasksathand>
+                    <div>
+                        <h3>Tâches en cours</h3>
+                        <mat-list-option class="!h-auto" togglePosition="before">
+                            <div class="flex flex-row justify-between grid-cols-2 gap-4">
+                                <div class="flex flex-row flex-wrap items-center break-words whitespace-break-spaces">Miauler</div>
+                                <div class="flex flex-row justify-center items-center gap-4">
+                                    <span>12:00:00</span>
+                                    <div class="flex flex-row gap-2 tasks-actions">
+                                        <button 
+                                            (click)="addTime($event)"
+                                            mat-icon-button class="button-icon"
+                                            aria-label="icon-button with start task icon"
+                                            [matTooltip]="'Commencer la tâche'"
+                                        >
+                                            <mat-icon class="button-icon__icon">play_arrow</mat-icon>
+                                        </button>
+                                        <button 
+                                            (click)="addTime($event)"
+                                            mat-icon-button class="button-icon"
+                                            aria-label="icon-button with add time icon"
+                                            [matTooltip]="'Ajouter une entrée de temps'"
+                                        >
+                                            <mat-icon class="button-icon__icon">more_time</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-list-option>
+                    </div>
+                </mat-selection-list>
+                <mat-selection-list #taskscomplete>
+                    <div>
+                        <h3>Tâches terminée</h3>
+                        <mat-list-option class="!h-auto" togglePosition="before">
+                            <div class="flex flex-row justify-between grid-cols-2 gap-4">
+                                <div class="flex flex-row flex-wrap items-center break-words whitespace-break-spaces">Miauler</div>
+                                <div class="flex flex-row justify-center items-center gap-4">
+                                    <span>12:00:00</span>
+                                    <div class="flex flex-row flex-wrap gap-2 tasks-actions">
+                                    
+                                        <button 
+                                            (click)="addTime($event)" 
+                                            mat-icon-button class="button-icon" 
+                                            aria-label="icon-button with add time icon" 
+                                            [matTooltip]="'Ajouter une entrée de temps'"
+                                        >
+                                            <mat-icon class="button-icon__icon">more_time</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-list-option>
+                    </div>
+                </mat-selection-list>
+            </div>
+        </div>
+    </div>
 }
