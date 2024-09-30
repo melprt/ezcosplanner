@@ -2,7 +2,6 @@
 @use '../../../../../styles/button-icon.scss' as button-icon;
 
 @include card-theme.card-content();
-@include button-icon.button-icon(60px, 73px);
 
 .expandable-picture:not(.expanded) {
   position: relative;
@@ -11,30 +10,39 @@
   -moz-transition: height 0.2s linear;
   -o-transition: height 0.2s linear;
   transition: height 0.2s linear;
-  
-  &:hover img {
-    opacity: 0.3;
+
+  @include button-icon.button-icon(21px, 30px);
+
+  .button-icon__icon {
+    border-radius: 100%;
+
+    ::ng-deep .mat-mdc-button-persistent-ripple.mdc-fab__ripple {
+      border-radius: 100%;
+    }
   }
-  
-  &:hover .see-more {
-    opacity: 1;
+
+  &:hover {
+    > .see-more {
+      opacity: 1;
+      z-index: 999999;
+    }
+
+    .shadow {
+      -webkit-box-shadow: inset -1px -50px 17px -8px rgba(0, 0, 0, 0.51);
+      box-shadow: inset -1px -50px 17px -8px rgba(0, 0, 0, 0.51);
+    }
+  }
+
+  .shadow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
   }
 
   .see-more {
-    transition: .5s ease;
+    transition: 0.5s ease;
     opacity: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    text-align: center;
-
-    > .text {
-      background-color: theme("colors.secondary");
-      color: white;
-      padding: 16px 32px;
-    }
   }
 }
 
@@ -53,6 +61,8 @@
   display: flex;
   align-items: center;
 
+  @include button-icon.button-icon(60px, 73px);
+
   > img {
     width: 100%;
     max-width: 1200px;
@@ -68,11 +78,10 @@
   }
 
   .wip-description {
-    // max-width: 700px;
-    // max-height: 100%;
-    // position: fixed;
-    // bottom: 0;
-    // left: 30%;
-    // background-color: theme("colors.secondary");
+    left: 50%;
+    transform: translate(-50%, -50%);
+    bottom: 15px;
+    padding: 10px 40px;
+    background-color: #91737aad;
   }
 }

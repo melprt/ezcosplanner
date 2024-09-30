@@ -1,5 +1,5 @@
 @if (cosplan(); as cosplan) {
-    <ezc-dashboard-title [cosplan]="cosplan" [subtitle]= "'mewmew'"></ezc-dashboard-title>
+    <ezc-dashboard-title [cosplan]="cosplan" [subtitle]= "part()?.name ?? ''"></ezc-dashboard-title>
 }
 
 @if (part(); as part) {
